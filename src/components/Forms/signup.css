@@ -1,0 +1,49 @@
+.form-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.form {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    gap: 1.5rem;
+    height: 37rem;
+}
+
+.form--input {
+    width: 15rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid gray;
+    font-family: 'Inter', sans-serif;
+    padding: 0.5rem;
+}
+
+.form--submit {
+    width: 15rem;
+    height: 2.5rem;
+    padding: 10px;
+    border-radius: 0.5rem;
+    color: white;
+    background-color: #F900BF;
+    border: none;   
+    cursor: pointer; 
+    margin-top: 2rem;
+}
+
+.field{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form--title{
+    font-size: 1.5rem;
+}
