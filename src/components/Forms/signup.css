@@ -14,7 +14,7 @@
     flex-direction: column;
     box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
     gap: 1.5rem;
-    height: 37rem;
+    min-height: 37rem;
     z-index: 1;
     transition: all .4s ease-in-out; 
 }
@@ -41,15 +41,24 @@
     background-color: #F900BF;
     border: none;   
     cursor: pointer; 
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
 }
 
 .field{
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    position: relative;
 }
 
 .form--title{
     font-size: 1.5rem;
+}
+
+.error-message{
+    color: #F900BF;
+    white-space: normal;
+    max-width: 15rem;
+    max-height: 1rem;
+    font-size: xx-small;
 }
