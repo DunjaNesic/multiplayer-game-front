@@ -3,10 +3,10 @@ import './signup.css'
 
 function SignUp() {
   const [formData, setFormData] = React.useState({
-    username: "",
+    fname: "",
+    lname: "",
     email: "",
-    password: "",
-    passwordConfirm: ""
+    password: ""
 })
 
 function handleChange(event) {
@@ -20,7 +20,7 @@ function handleChange(event) {
 function handleSubmit(event) {
     event.preventDefault()
     
-    fetch("http://localhost:3000", {
+    fetch("http://localhost:3000/register", {
         method: "POST",
         crossDomain: true,
         headers: {
@@ -41,20 +41,30 @@ function handleSubmit(event) {
         });
     }
    
-
   return (
     <div className="form-container">
             <form className="form" onSubmit={handleSubmit}>
             <h1 className="form--title">Let's Create Your <br /> Account!</h1>
               <div className="field">
-              <h5>Username</h5>
+              <h5>First Name</h5>
             <input 
-                    type="username" 
-                    placeholder="Username"
+                    type="fname" 
+                    placeholder="First name"
                     className="form--input"
-                    name="username"
+                    name="fname"
                     onChange={handleChange}
-                    value={formData.username}
+                    value={formData.fname}
+                />
+                </div>
+                <div className="field">
+                <h5>Last Name</h5>
+                <input 
+                    type="lname" 
+                    placeholder="Last name"
+                    className="form--input"
+                    name="lname"
+                    onChange={handleChange}
+                    value={formData.lname}
                 />
                 </div>
                 <div className="field">
@@ -69,7 +79,7 @@ function handleSubmit(event) {
                 />
                 </div>
                 <div className="field">
-                <h5>Input password</h5>
+                <h5>Password</h5>
                 <input 
                     type="password" 
                     placeholder="Password"
@@ -77,17 +87,6 @@ function handleSubmit(event) {
                     name="password"
                     onChange={handleChange}
                     value={formData.password}
-                />
-                </div>
-                <div className="field">
-                <h5>Repeat password</h5>
-                <input 
-                    type="password" 
-                    placeholder="Confirm password"
-                    className="form--input"
-                    name="passwordConfirm"
-                    onChange={handleChange}
-                    value={formData.passwordConfirm}
                 />
                 </div>
                 <button 

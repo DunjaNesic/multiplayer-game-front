@@ -2,7 +2,7 @@ import React from 'react'
 
 function LogIn() {
   const [formData, setFormData] = React.useState({
-    username: "",
+    email: "",
     password: "",
 })
 
@@ -16,7 +16,28 @@ function handleChange(event) {
 
 function handleSubmit(event) {
     event.preventDefault()
-    console.log("Log in");
+    fetch("http://localhost:3000/login-user", {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data, "userRegister");
+          if (data.status === "ok") {
+            alert("Successfully Loged In");
+            window.localStorage.setItem("token", data.data)
+            window.location.href="./Lobby"
+            //ovde nes ne radi zbog routera
+          } else {
+            alert("Something went wrong");
+          }
+        });
 }
 
   return (
@@ -24,14 +45,14 @@ function handleSubmit(event) {
             <form className="form" onSubmit={handleSubmit}>
             <h1 className="form--title">Welcome back!</h1>
               <div className="field">
-              <h5>Username</h5>
+              <h5>Email</h5>
             <input 
-                    type="username" 
-                    placeholder="Username"
+                    type="email" 
+                    placeholder="Email"
                     className="form--input"
-                    name="username"
+                    name="email"
                     onChange={handleChange}
-                    value={formData.username}
+                    value={formData.email}
                 />
                 </div>
                 

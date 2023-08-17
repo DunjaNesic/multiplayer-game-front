@@ -15,6 +15,12 @@
     box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
     gap: 1.5rem;
     height: 37rem;
+    z-index: 1;
+    transition: all .4s ease-in-out; 
+}
+
+.form:hover{
+    transform: scale(1.05); 
 }
 
 .form--input {
