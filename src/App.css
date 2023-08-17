@@ -54,3 +54,9 @@ body {
     min-width: 60rem;
     transform: translateY(-13rem)
 }
+
+.haikei-img2{
+    width: 100vw;
+    min-width: 50rem;
+    transform: translateY(-3rem)
+}

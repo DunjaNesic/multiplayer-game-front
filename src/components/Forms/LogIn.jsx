@@ -30,10 +30,8 @@ function handleSubmit(event) {
         .then((data) => {
           console.log(data, "userRegister");
           if (data.status === "ok") {
-            alert("Successfully Loged In");
             window.localStorage.setItem("token", data.data)
             window.location.href="./Lobby"
-            //ovde nes ne radi zbog routera
           } else {
             alert("Something went wrong");
           }

@@ -1,0 +1,123 @@
+.user--data{
+    margin: 2rem;
+    
+    border-radius: 1rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.user--data h3{
+    margin-bottom: 1rem;
+}
+
+.user--table, td, tr{
+    border: 1px solid white;
+}
+
+.user--table{
+    padding: 1rem;
+    border-radius: 1rem; 
+    background-color: #F900BF;   
+    max-width: fit-content;
+}
+
+td{
+    border-radius: 0.4rem;
+    padding: 0.5rem;
+}
+
+.invite--oponent{
+    max-width: fit-content;
+    background-color: #F900BF;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+}
+
+.arrow {
+    border: solid #F900BF;
+    border-width: 0 10px 10px 0;
+    display: inline-block;
+    padding: 10px;
+    
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+
+  .call{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .roomBtn{
+    cursor: pointer;
+    padding: 2rem;
+    border-radius: 1rem;
+    color: white;
+    background-color: #F900BF;
+    border: #F900BF;
+    font-family: ladislav;
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+  }
+  
+  .code{
+    color: #F900BF;
+  }
+
+  input{
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid #F900BF;
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+  }
+
+  .invitation{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .btnStart{
+    cursor: pointer;
+    padding: 1rem 5rem;
+    border-radius: 3rem;
+    color: white;
+    background-color: #F900BF;
+    border: #F900BF;
+    font-family: ladislav;
+    font-size: 7rem;
+    margin-top: 3rem;
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+  }
+
+  .start{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logoutBtn{
+    cursor: pointer;
+    padding: 1rem 2rem;
+    border-radius: 0.9rem;
+    color: white;
+    background-color: #F900BF;
+    border: #F900BF;
+    font-family: ladislav;
+    font-size: 1rem;
+    margin: 2rem;
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+  }
+
+  .logout{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 1;
+  }
