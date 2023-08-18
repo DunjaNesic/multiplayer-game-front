@@ -8,15 +8,25 @@ import DataLoggedUser from "./components/Lobby/DataLoggedUser"
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
 import Start from "./components/Lobby/Start"
 import Logout from "./components/Lobby/Logout"
+import Gameplay from "./components/Gameplay/Gameplay"
 
 export default function App() {
-   
+
+  const isLoggedIn = window.localStorage.getItem("loggedIn");
   
     return (
       <Router>
         <div className="App">
         <Routes>
-          <Route exact path="/" element={
+          <Route exact path="/" element={ isLoggedIn === "true" ? 
+
+<div>
+            <DataLoggedUser/>
+            <Start/>
+            <Logout/>
+            <img className="haikei-img2" src={haikei2} alt="d" />
+          </div> :
+
             <div className="form--img">
             <div className="forms">
             <div className="par--wrapper">
@@ -41,7 +51,7 @@ export default function App() {
             <img className="haikei-img2" src={haikei2} alt="d" />
           </div> } />
           <Route path="/Gameplay" element={
-            <div>dunja</div>
+            <Gameplay/>
           }></Route>
         </Routes>
         </div>
