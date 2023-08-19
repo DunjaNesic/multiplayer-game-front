@@ -5,8 +5,8 @@ import './gameplay.css'
 function Gameplay() {
   return (
     <div className='game'>
-        <Board/>
-        <Board/>
+        <Board className='myBoard'/>
+        <Board className='opponentsBoard'/>
     </div>
   )
 }
