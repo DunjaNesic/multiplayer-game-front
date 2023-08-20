@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './user.css'
-import CallFriend from './CallFriend';
+
 
 function DataLoggedUser() {
   const [loggedUserInfo, setLoggedUserInfo] = useState({
@@ -36,7 +36,7 @@ function DataLoggedUser() {
 
   return (
     <div className='user--data'>
-      <CallFriend/>
+      
       <table className='user--table' >
         <tbody>
   <tr>

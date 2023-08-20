@@ -1,11 +1,9 @@
 .user--data{
-    margin: 2rem;
-    
     border-radius: 1rem;
     color: white;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    margin-left: 2rem;
 }
 
 .user--data h3{
@@ -34,6 +32,7 @@ td{
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    color: white;
 }
 
 .arrow {
@@ -68,6 +67,7 @@ td{
   
   .code{
     color: #F900BF;
+    margin: 1rem 0rem;
   }
 
   input{
@@ -75,23 +75,26 @@ td{
     border-radius: 0.5rem;
     border: 2px solid #F900BF;
     box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    margin: 0rem 1rem;
+    width: 25rem;
   }
 
   .invitation{
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2rem; */
+    margin: 2rem;
   }
 
   .btnStart{
     cursor: pointer;
-    padding: 1rem 5rem;
+    padding: 1rem 4rem;
     border-radius: 3rem;
     color: white;
     background-color: #F900BF;
     border: #F900BF;
     font-family: ladislav;
-    font-size: 7rem;
+    font-size: 3rem;
     margin-top: 3rem;
     box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
   }
