@@ -58,7 +58,6 @@ export default function App() {
           }>
           </Route>
           <Route path="/Lobby" element={ isLoggedIn === "true" ? 
-
 <div>
   <CallFriend
     socket={ socket }
@@ -86,6 +85,7 @@ export default function App() {
           <Route path="/Gameplay" element={
             <Gameplay/>
           }></Route>
+          <Route path="/Gameplay" component={Gameplay} />
         </Routes>
         </div>
         </Router>

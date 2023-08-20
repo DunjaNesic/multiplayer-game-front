@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import "./user.css";
 
 function CallFriend(props) {
@@ -25,36 +25,37 @@ function CallFriend(props) {
   };
 
   //Radi okej i bez ovog tkda ga trenutno ostavljam zakomentasiranog
-  // useEffect(() => {
-  //   if (props.socket.current){
-  //   props.socket.current.on("gameStart", (response) => {
-  //      setMatchObj(
-  //       {
-  //         room: response.room,
-  //         player1: response.player1,
-  //         player2: response.player2
-  //       }
-  //      )
-  //      if (response.player1 !== response.player2) {setMatchStarted(true)
-  //       }
-  //   });
-  // }
-  // }, [props.socket]);
+  //  useEffect(() => {
+  //    if (props.socket.current){
+  //    props.socket.current.on("gameStart", (response) => {
+  //       setMatchObj(
+  //        {
+  //          room: response.room,
+  //          player1: response.player1,
+  //          player2: response.player2
+  //        }
+  //       )
+  //       if (response.player1 !== response.player2) {setMatchStarted(true)
+  //        }
+  //    });
+  //  }
+  //  }, [props.socket]);
 
   const handleSocketConnection = () => {
     const code = inputRoomCode;
-    
+
+    props.socket.current.off("gameStart");
     props.socket.current.emit("sendRoomCode", code);
   
     props.socket.current.on("gameStart", (response) => {
       setMatchObj({
-        ...matchObj,
         room: response.room,
         player1: response.player1,
         player2: response.player2
       });
-  
-      if (response.player1 !== response.player2) {
+      //Ovde se dunja ispisuje 2 puta 
+      console.log("Dunja");
+      if (response.room !== "" && (response.player1.id !== response.player2.id)) {
         setMatchStarted(true);
       }
     });
