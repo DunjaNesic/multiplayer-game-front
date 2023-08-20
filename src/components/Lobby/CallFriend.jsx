@@ -49,6 +49,7 @@ function CallFriend(props) {
   
     props.socket.current.on("gameStart", (response) => {
       setMatchObj({
+        ...matchObj,
         room: response.room,
         player1: response.player1,
         player2: response.player2

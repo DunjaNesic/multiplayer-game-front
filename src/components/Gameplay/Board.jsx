@@ -1,62 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Field from './Field';
 import './gameplay.css'
+//ja se stvarno izvinjavam za ovaj kod 
+const Board = (props) => {
+    const defaultBoard = [
+        [null, null, null, null, null, null],
+        [null, null, null, null, null, null],
+        [null, null, null, null, null, null],
+        [null, null, null, null, null, null],
+        [null, null, null, null, null, null],
+        [null, null, null, null, null, null]
+    ]
+    const [board, setBoard] = useState(defaultBoard);
+    const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
 
-const Board = () => {
 
-    return (
-       <div className="board">
-        <div className="gameplay--row">
-            <Field fieldColumn={0} fieldRow={0}/>
-            <Field fieldColumn={1} fieldRow={0}/>
-            <Field fieldColumn={2} fieldRow={0}/>
-            <Field fieldColumn={3} fieldRow={0}/>
-            <Field fieldColumn={4} fieldRow={0}/>
-            <Field fieldColumn={5} fieldRow={0}/>
+    const handlePlacement = (row, column, choice) => {
+        if (props.gameMode === 'placement' && board[row][column] === null) {
+          const barbiesCount = board.flat().filter(cell => cell === 'barbie').length;
+          const bombsCount = board.flat().filter(cell => cell === 'bomb').length;
+      
+          if (choice === 'barbie' && barbiesCount < 6) {
+            const updatedBoard = [...board];
+            updatedBoard[row][column] = choice;
+            setBoard(updatedBoard);
+          } else if (bombsCount < 6) {
+            setCurrentlyPlacing("bomb")
+            const updatedBoard = [...board];
+            updatedBoard[row][column] = choice;
+            setBoard(updatedBoard);
+          }
+        }
+      };
+      
+      const handleGuess = (row, column) => {
+        //ovo je za opponents board, to cu kasnije
+      };
+
+      return (
+      <div className={`board ${(props.gameMode === 'placement' && props.whoseBoard === 'opponentsBoard') || (props.gameMode==='playing' && props.whoseBoard ==='myBoard') ? 'disabled' : ''}`}>
+      {board.map((row, fieldRow) => (
+        <div key={fieldRow} className="gameplay--row">
+          {row.map((cell, fieldColumn) => (
+            <Field
+              key={fieldColumn}
+              fieldColumn={fieldColumn}
+              fieldRow={fieldRow}
+              gameMode={props.gameMode}
+              content={cell}
+              onClick={
+                props.gameMode === 'placement'
+                  ? () => handlePlacement(fieldRow, fieldColumn, currentlyPlacing)
+                  : () => handleGuess(fieldRow, fieldColumn)
+              }
+            />
+          ))}
         </div>
-        <div className="gameplay--row">
-            <Field fieldColumn={0} fieldRow={1}/>
-            <Field fieldColumn={1} fieldRow={1}/>
-            <Field fieldColumn={2} fieldRow={1}/>
-            <Field fieldColumn={3} fieldRow={1}/>
-            <Field fieldColumn={4} fieldRow={1}/>
-            <Field fieldColumn={5} fieldRow={1}/>
-        </div>
-        <div className="gameplay--row">
-            <Field fieldColumn={0} fieldRow={2}/>
-            <Field fieldColumn={1} fieldRow={2}/>
-            <Field fieldColumn={2} fieldRow={2}/>
-            <Field fieldColumn={3} fieldRow={2}/>
-            <Field fieldColumn={4} fieldRow={2}/>
-            <Field fieldColumn={5} fieldRow={2}/>
-        </div>
-        <div className="gameplay--row">
-            <Field fieldColumn={0} fieldRow={3}/>
-            <Field fieldColumn={1} fieldRow={3}/>
-            <Field fieldColumn={2} fieldRow={3}/>
-            <Field fieldColumn={3} fieldRow={3}/>
-            <Field fieldColumn={4} fieldRow={3}/>
-            <Field fieldColumn={5} fieldRow={3}/>
-        </div>
-        <div className="gameplay--row">
-            <Field fieldColumn={0} fieldRow={4}/>
-            <Field fieldColumn={1} fieldRow={4}/>
-            <Field fieldColumn={2} fieldRow={4}/>
-            <Field fieldColumn={3} fieldRow={4}/>
-            <Field fieldColumn={4} fieldRow={4}/>
-            <Field fieldColumn={5} fieldRow={4}/>
-        </div>
-        <div className="gameplay--row">
-            <Field fieldColumn={0} fieldRow={5}/>
-            <Field fieldColumn={1} fieldRow={5}/>
-            <Field fieldColumn={2} fieldRow={5}/>
-            <Field fieldColumn={3} fieldRow={5}/>
-            <Field fieldColumn={4} fieldRow={5}/>
-            <Field fieldColumn={5} fieldRow={5}/>
-        </div>
-       </div>
-    )
-}
+      ))}
+    </div>
+      );
+                }
 
 
 export default Board;
