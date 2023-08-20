@@ -8,7 +8,7 @@ import DataLoggedUser from "./components/Lobby/DataLoggedUser"
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
 import Logout from "./components/Lobby/Logout"
 import Gameplay from "./components/Gameplay/Gameplay"
-import { io } from "socket.io-client"
+import  io  from "socket.io-client"
 import CallFriend from './components/Lobby/CallFriend';
 
 export default function App() {
@@ -82,10 +82,8 @@ export default function App() {
   <img className="haikei-img" src={haikei} alt="d" />
   </div> 
   } />
-          <Route path="/Gameplay" element={
-            <Gameplay/>
-          }></Route>
-          <Route path="/Gameplay" component={Gameplay} />
+          <Route path="/Gameplay" element={<Gameplay socket={socket.current}/>}></Route>
+        
         </Routes>
         </div>
         </Router>

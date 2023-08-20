@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Field from './Field';
 import './gameplay.css'
+import  io  from 'socket.io-client';
+
 //ja se stvarno izvinjavam za ovaj kod 
 const Board = (props) => {
     const defaultBoard = [
@@ -13,7 +15,7 @@ const Board = (props) => {
     ]
     const [board, setBoard] = useState(defaultBoard);
     const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
-
+    const [score, setScore] = useState(0);
 
     const handlePlacement = (row, column, choice) => {
         if (props.gameMode === 'placement' && board[row][column] === null) {
@@ -24,17 +26,36 @@ const Board = (props) => {
             const updatedBoard = [...board];
             updatedBoard[row][column] = choice;
             setBoard(updatedBoard);
+            //ovde kaze da je props.socket undefined
+            console.log(props.socket);
+            props.socket.emit('updateDashboard', { board: updatedBoard });
           } else if (bombsCount < 6) {
             setCurrentlyPlacing("bomb")
             const updatedBoard = [...board];
             updatedBoard[row][column] = choice;
             setBoard(updatedBoard);
+            // props.socket.emit('updateDashboard', { board: updatedBoard });
           }
-        }
+        }    
       };
       
       const handleGuess = (row, column) => {
-        //ovo je za opponents board, to cu kasnije
+        if (props.gameMode === 'playing' && board[row][column] === null) {
+            const selectedCell = board[row][column];
+            if (selectedCell === "barbie") {
+                setScore((prevScore)=>prevScore + 10)
+                const updatedBoard = [...board];
+                updatedBoard[row][column] = "correct";
+                setBoard(updatedBoard);
+                // props.socket.emit('updateDashboard', { board: updatedBoard, score: score });
+            } else if (selectedCell === "bomb") {
+                setScore((prevScore)=>prevScore - 5)
+                const updatedBoard = [...board];
+                updatedBoard[row][column] = "wrong";
+                setBoard(updatedBoard);
+                // props.socket.emit('updateDashboard', { board: updatedBoard, score: score});
+            }
+          }
       };
 
       return (
