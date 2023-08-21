@@ -4,6 +4,7 @@ import "./user.css";
 function CallFriend(props) {
   const [inputRoomCode, setInputRoomCode] = useState("");
   const [matchStarted, setMatchStarted] = useState(false);
+  const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
   const [matchObj, setMatchObj] = useState({
     room: "",
     player1: "",
@@ -41,6 +42,7 @@ function CallFriend(props) {
   //  }, [props.socket]);
 
   const handleSocketConnection = () => {
+    setPlayButtonDisabled(true);
     const code = inputRoomCode;
 
     props.socket.current.off("gameStart");
@@ -53,15 +55,20 @@ function CallFriend(props) {
         player1: response.player1,
         player2: response.player2,
       });
-      //Ovde se dunja ispisuje 2 puta
-      console.log("Dunja");
       props.setPlayer1id(response.player1.id);
       props.setPlayer2id(response.player2.id);
       if (response.room !== "" && response.player1.id !== response.player2.id) {
-        setMatchStarted(true);
+        setMatchStarted(true);  
       }
     });
+
+    props.socket.current.on("gameFull", (response) => {
+      alert("Room is full"); 
+      setPlayButtonDisabled(false);
+    })
   };
+
+   
 
   if (matchStarted === true) {
     window.location.href = "./Gameplay";
@@ -89,7 +96,7 @@ function CallFriend(props) {
         onChange={(e) => setInputRoomCode(e.target.value)}
       />
       <div className="start">
-        <button className="btnStart" onClick={handleSocketConnection}>
+        <button className="btnStart" onClick={handleSocketConnection} disabled={playButtonDisabled}>
           PLAY
         </button>
       </div>
