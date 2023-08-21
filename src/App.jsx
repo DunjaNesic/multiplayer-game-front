@@ -1,4 +1,4 @@
-import React, {useRef, useEffect } from "react"
+import React, {useRef, useEffect, useState } from "react"
 import './App.css'
 import SignUp from "./components/Forms/SignUp"
 import LogIn from './components/Forms/LogIn'
@@ -17,15 +17,21 @@ export default function App() {
   
   const socket = useRef();
 
-  useEffect(() => { 
-    socket.current = io("http://localhost:3000", { transports: ["websocket"] });
+  const [isSocketReady, setSocketReady] = useState(false);
 
-    return () => {
-      if (socket.current) {
-        socket.current.disconnect();
-      }
-    };
-  }, []);
+useEffect(() => { 
+  socket.current = io("http://localhost:3000", { transports: ["websocket"] });
+
+  socket.current.on('connect', () => {
+    setSocketReady(true); 
+  });
+
+  return () => {
+    if (socket.current) {
+      socket.current.disconnect();
+    }
+  };
+}, []);
   
     return (
       <Router>
@@ -82,7 +88,15 @@ export default function App() {
   <img className="haikei-img" src={haikei} alt="d" />
   </div> 
   } />
-          <Route path="/Gameplay" element={<Gameplay socket={socket.current}/>}></Route>
+          <Route
+  path="/Gameplay"
+  element={isLoggedIn === "true" && socket.current ? (
+    <Gameplay socket={socket.current} />
+  ) : (
+    <div>Loading...</div>
+  )}
+/>
+
         
         </Routes>
         </div>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Field from './Field';
 import './gameplay.css'
-import  io  from 'socket.io-client';
 
 //ja se stvarno izvinjavam za ovaj kod 
 const Board = (props) => {
@@ -26,7 +25,6 @@ const Board = (props) => {
             const updatedBoard = [...board];
             updatedBoard[row][column] = choice;
             setBoard(updatedBoard);
-            //ovde kaze da je props.socket undefined
             console.log(props.socket);
             props.socket.emit('updateDashboard', { board: updatedBoard });
           } else if (bombsCount < 6) {
@@ -34,7 +32,7 @@ const Board = (props) => {
             const updatedBoard = [...board];
             updatedBoard[row][column] = choice;
             setBoard(updatedBoard);
-            // props.socket.emit('updateDashboard', { board: updatedBoard });
+            props.socket.emit('updateDashboard', { board: updatedBoard });
           }
         }    
       };
@@ -47,13 +45,13 @@ const Board = (props) => {
                 const updatedBoard = [...board];
                 updatedBoard[row][column] = "correct";
                 setBoard(updatedBoard);
-                // props.socket.emit('updateDashboard', { board: updatedBoard, score: score });
+                props.socket.emit('updateDashboard', { board: updatedBoard, score: score });
             } else if (selectedCell === "bomb") {
                 setScore((prevScore)=>prevScore - 5)
                 const updatedBoard = [...board];
                 updatedBoard[row][column] = "wrong";
                 setBoard(updatedBoard);
-                // props.socket.emit('updateDashboard', { board: updatedBoard, score: score});
+                props.socket.emit('updateDashboard', { board: updatedBoard, score: score});
             }
           }
       };

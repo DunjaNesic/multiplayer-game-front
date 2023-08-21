@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import Board from './Board'
 import './gameplay.css'
-import  io  from 'socket.io-client';
 
-function Gameplay(props) {
+const Gameplay = props => {
 
   const [gameMode, setGameMode] = useState("placement");
 
