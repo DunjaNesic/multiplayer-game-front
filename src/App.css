@@ -1,63 +1,62 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.App{
-    overflow: hidden;
-    max-height: 100vh;
+.App {
+  overflow: hidden;
+  min-height: 100fs;
 }
 
 body {
-    margin: 0;
-    background-color: #F9DFF2;
-    height: 100vh;
-    font-family: 'ladislav'
+  margin: 0;
+  background-color: #f9dff2;
+  height: 100vh;
+  font-family: "ladislav";
 }
 
-.forms{
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 2.5rem;
+.forms {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 2.5rem;
 }
 
-.login--par{
-    font-size: 4rem;
-    font-weight: 800;
-    color: #F900BF;
+.login--par {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #f900bf;
 }
 
-.signup--par{
-    font-size: 4rem;
-    font-weight: 800;
+.signup--par {
+  font-size: 4rem;
+  font-weight: 800;
 }
 
 @font-face {
-    font-family: ladislav;
-    src: url('./Ladislav-Bold.otf');
+  font-family: ladislav;
+  src: url("./Ladislav-Bold.otf");
 }
 
-.par--wrapper{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.par--wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.pink--par{
-    color: #F900BF;
+.pink--par {
+  color: #f900bf;
 }
 
-.haikei-img{
-    width: 100vw;
-    min-width: 60rem;
-    transform: translateY(-13rem)
+.haikei-img {
+  width: 100vw;
+  min-width: 60rem;
+  transform: translateY(-13rem);
 }
 
-.haikei-img2{
-    width: 100vw;
-    min-width: 50rem;
-    transform: translateY(-3rem)
+.haikei-img2 {
+  width: 100vw;
+  min-width: 50rem;
+  transform: translateY(-3rem);
 }
-

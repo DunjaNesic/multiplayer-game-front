@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import "./user.css";
 
 function CallFriend(props) {
-  
   const [inputRoomCode, setInputRoomCode] = useState("");
   const [matchStarted, setMatchStarted] = useState(false);
   const [matchObj, setMatchObj] = useState({
     room: "",
     player1: "",
-    player2: ""
+    player2: "",
   });
 
   const clickedButton = () => {
@@ -46,26 +45,26 @@ function CallFriend(props) {
 
     props.socket.current.off("gameStart");
     props.socket.current.emit("sendRoomCode", code);
-  
+
     props.socket.current.on("gameStart", (response) => {
       setMatchObj({
         ...matchObj,
         room: response.room,
         player1: response.player1,
-        player2: response.player2
+        player2: response.player2,
       });
-      //Ovde se dunja ispisuje 2 puta 
+      //Ovde se dunja ispisuje 2 puta
       console.log("Dunja");
       props.setPlayer1id(response.player1.id);
       props.setPlayer2id(response.player2.id);
-      if (response.room !== "" && (response.player1.id !== response.player2.id)) {
+      if (response.room !== "" && response.player1.id !== response.player2.id) {
         setMatchStarted(true);
       }
     });
   };
 
-  if (matchStarted===true){
-    window.location.href="./Gameplay"
+  if (matchStarted === true) {
+    window.location.href = "./Gameplay";
   }
 
   return (
@@ -81,9 +80,19 @@ function CallFriend(props) {
           Get Room Code
         </button>
       </div>
-      <p className="code">Input this code to start the game: {props.roomCode}</p>
-      <input type="text" value={inputRoomCode} onChange={(e)=>setInputRoomCode(e.target.value)} />
-      <div className='start'><button className='btnStart' onClick={handleSocketConnection}>PLAY</button></div>
+      <p className="code">
+        Input this code to start the game: {props.roomCode}
+      </p>
+      <input
+        type="text"
+        value={inputRoomCode}
+        onChange={(e) => setInputRoomCode(e.target.value)}
+      />
+      <div className="start">
+        <button className="btnStart" onClick={handleSocketConnection}>
+          PLAY
+        </button>
+      </div>
     </div>
   );
 }
