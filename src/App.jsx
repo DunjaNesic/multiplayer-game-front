@@ -19,6 +19,10 @@ export default function App() {
 
   const [isSocketReady, setSocketReady] = useState(false);
 
+  const [roomCode, setRoomCode] = useState("");
+  const [player1id, setPlayer1id] = useState("");
+  const [player2id, setPlayer2id] = useState("");
+
 useEffect(() => { 
   socket.current = io("http://localhost:3000", { transports: ["websocket"] });
 
@@ -41,6 +45,12 @@ useEffect(() => {
         <div>
           <CallFriend
             socket={ socket }
+            roomCode={ roomCode }
+            setRoomCode={ setRoomCode }
+            player1id={player1id}
+            setPlayer1id={setPlayer1id}
+            player2id={player2id}
+            setPlayer2id={setPlayer2id}
             />
             <DataLoggedUser/>          
             <Logout/>
@@ -67,6 +77,12 @@ useEffect(() => {
 <div>
   <CallFriend
     socket={ socket }
+    roomCode={roomCode }
+    setRoomCode={setRoomCode}
+    player1id={player1id}
+    setPlayer1id={setPlayer1id}
+    player2id={player2id}
+    setPlayer2id={setPlayer2id}
     />
     <DataLoggedUser/>          
     <Logout/>
@@ -91,7 +107,13 @@ useEffect(() => {
           <Route
   path="/Gameplay"
   element={isLoggedIn === "true" && socket.current ? (
-    <Gameplay socket={socket.current} />
+    <Gameplay socket={socket.current} 
+    roomCode={ roomCode }
+    setRoomCode={ setRoomCode }
+    player1id={player1id}
+    setPlayer1id={setPlayer1id}
+    player2id={player2id}
+    setPlayer2id={setPlayer2id} />
   ) : (
     <div>Loading...</div>
   )}

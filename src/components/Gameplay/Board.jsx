@@ -15,9 +15,15 @@ const Board = (props) => {
     const [board, setBoard] = useState(defaultBoard);
     const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
     const [score, setScore] = useState(0);
+    const [data, setData] = useState({
+      matchCode: props.roomCode,     
+      dashboard: { board },
+      playerId: ""
+    });
+   
 
     const handlePlacement = (row, column, choice) => {
-        if (props.gameMode === 'placement' && board[row][column] === null) {
+        if (props.socket && props.gameMode === 'placement' && board[row][column] === null) {
           const barbiesCount = board.flat().filter(cell => cell === 'barbie').length;
           const bombsCount = board.flat().filter(cell => cell === 'bomb').length;
       
@@ -25,16 +31,25 @@ const Board = (props) => {
             const updatedBoard = [...board];
             updatedBoard[row][column] = choice;
             setBoard(updatedBoard);
-            console.log(props.socket);
-            props.socket.emit('updateDashboard', { board: updatedBoard });
+            setData({
+              ...data,
+              dashboard: board,
+              playerId: props.socket.id
+            })
+            props.socket.emit('updateDashboard', data);
           } else if (bombsCount < 6) {
             setCurrentlyPlacing("bomb")
             const updatedBoard = [...board];
             updatedBoard[row][column] = choice;
             setBoard(updatedBoard);
-            props.socket.emit('updateDashboard', { board: updatedBoard });
+            setData({
+              ...data,
+              dashboard: board,
+              playerId: props.socket.id
+            })
+            props.socket.emit('updateDashboard', data);
           }
-        }    
+        }         
       };
       
       const handleGuess = (row, column) => {

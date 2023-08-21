@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./user.css";
 
 function CallFriend(props) {
-  const [roomCode, setRoomCode] = useState("");
+  
   const [inputRoomCode, setInputRoomCode] = useState("");
   const [matchStarted, setMatchStarted] = useState(false);
   const [matchObj, setMatchObj] = useState({
@@ -21,7 +21,7 @@ function CallFriend(props) {
       );
       counter += 1;
     }
-    setRoomCode(result);
+    props.setRoomCode(result);
   };
 
   //Radi okej i bez ovog tkda ga trenutno ostavljam zakomentasiranog
@@ -56,6 +56,8 @@ function CallFriend(props) {
       });
       //Ovde se dunja ispisuje 2 puta 
       console.log("Dunja");
+      props.setPlayer1id(response.player1.id);
+      props.setPlayer2id(response.player2.id);
       if (response.room !== "" && (response.player1.id !== response.player2.id)) {
         setMatchStarted(true);
       }
@@ -79,7 +81,7 @@ function CallFriend(props) {
           Get Room Code
         </button>
       </div>
-      <p className="code">Input this code to start the game: {roomCode}</p>
+      <p className="code">Input this code to start the game: {props.roomCode}</p>
       <input type="text" value={inputRoomCode} onChange={(e)=>setInputRoomCode(e.target.value)} />
       <div className='start'><button className='btnStart' onClick={handleSocketConnection}>PLAY</button></div>
     </div>
