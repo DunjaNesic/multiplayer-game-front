@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./user.css";
+import { useRoomCode } from "../RoomCodeContext";
 
 function CallFriend(props) {
   const [inputRoomCode, setInputRoomCode] = useState("");
+  const [codeForCopy, setCodeForCopy] = useState("");
+  const { roomCode, setRoomCode } = useRoomCode();
   const [matchStarted, setMatchStarted] = useState(false);
   const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
   const [matchObj, setMatchObj] = useState({
@@ -21,7 +24,7 @@ function CallFriend(props) {
       );
       counter += 1;
     }
-    props.setRoomCode(result);
+    setCodeForCopy(result);
   };
 
   //Radi okej i bez ovog tkda ga trenutno ostavljam zakomentasiranog
@@ -44,7 +47,10 @@ function CallFriend(props) {
   const handleSocketConnection = () => {
     setPlayButtonDisabled(true);
     const code = inputRoomCode;
-
+    if (code==="") {alert("Pls input the code first");
+    setPlayButtonDisabled(false);
+    return;
+  }
     props.socket.current.off("gameStart");
     props.socket.current.emit("sendRoomCode", code);
 
@@ -55,8 +61,8 @@ function CallFriend(props) {
         player1: response.player1,
         player2: response.player2,
       });
-      props.setPlayer1id(response.player1.id);
-      props.setPlayer2id(response.player2.id);
+      //vise se ne ispisuje dunja dvapuuuuuuuut vuuuuu
+      setRoomCode(response.room);
       if (response.room !== "" && response.player1.id !== response.player2.id) {
         setMatchStarted(true);  
       }
@@ -66,13 +72,20 @@ function CallFriend(props) {
       alert("Room is full"); 
       setPlayButtonDisabled(false);
     })
+
+     console.log("Room code is " + roomCode);
   };
 
-   
-
   if (matchStarted === true) {
-    window.location.href = "./Gameplay";
+     window.location.href = "./Gameplay";
   }
+
+  useEffect(() => {
+    setRoomCode("kod2")
+  console.log(roomCode);
+  },[roomCode]);
+  
+  
 
   return (
     <div className="invitation">
@@ -88,7 +101,7 @@ function CallFriend(props) {
         </button>
       </div>
       <p className="code">
-        Input this code to start the game: {props.roomCode}
+        Input this code to start the game: {codeForCopy}
       </p>
       <input
         type="text"

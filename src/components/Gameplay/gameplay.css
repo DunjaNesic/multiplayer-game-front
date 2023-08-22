@@ -16,7 +16,7 @@
   
   .board {
     width: fit-content;
-    border: 1px solid #F900BF;
+    /* border: 1px solid #F900BF; */
     display: flex;
     flex-direction: column;
   }

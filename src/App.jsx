@@ -10,6 +10,7 @@ import Logout from "./components/Lobby/Logout"
 import Gameplay from "./components/Gameplay/Gameplay"
 import  io  from "socket.io-client"
 import CallFriend from './components/Lobby/CallFriend';
+import { RoomCodeProvider } from "./components/RoomCodeContext"
 
 export default function App() {
 
@@ -19,9 +20,8 @@ export default function App() {
 
   const [isSocketReady, setSocketReady] = useState(false);
 
-  const [roomCode, setRoomCode] = useState("");
-  const [player1id, setPlayer1id] = useState("");
-  const [player2id, setPlayer2id] = useState("");
+  // const [roomCode, setRoomCode] = useState("lalalla");
+  // };
 
 useEffect(() => { 
   socket.current = io("http://localhost:3000", { transports: ["websocket"] });
@@ -38,19 +38,17 @@ useEffect(() => {
 }, []);
   
     return (
+      
       <Router>
+        <RoomCodeProvider>
         <div className="App">
         <Routes>
           <Route exact path="/" element={ isLoggedIn === "true" ? 
         <div>
           <CallFriend
             socket={ socket }
-            roomCode={ roomCode }
-            setRoomCode={ setRoomCode }
-            player1id={player1id}
-            setPlayer1id={setPlayer1id}
-            player2id={player2id}
-            setPlayer2id={setPlayer2id}
+            // roomCode={ roomCode }
+            // setRoomCode={ setRoomCode }
             />
             <DataLoggedUser/>          
             <Logout/>
@@ -77,12 +75,8 @@ useEffect(() => {
 <div>
   <CallFriend
     socket={ socket }
-    roomCode={roomCode }
-    setRoomCode={setRoomCode}
-    player1id={player1id}
-    setPlayer1id={setPlayer1id}
-    player2id={player2id}
-    setPlayer2id={setPlayer2id}
+    // roomCode={roomCode }
+    // setRoomCode={setRoomCode}
     />
     <DataLoggedUser/>          
     <Logout/>
@@ -108,12 +102,9 @@ useEffect(() => {
   path="/Gameplay"
   element={isLoggedIn === "true" && socket.current ? (
     <Gameplay socket={socket.current} 
-    roomCode={ roomCode }
-    setRoomCode={ setRoomCode }
-    player1id={player1id}
-    setPlayer1id={setPlayer1id}
-    player2id={player2id}
-    setPlayer2id={setPlayer2id} />
+    // roomCode={ roomCode }
+    // setRoomCode={ setRoomCode }
+     />
   ) : (
     <div>Loading...</div>
   )}
@@ -122,6 +113,7 @@ useEffect(() => {
         
         </Routes>
         </div>
+        </RoomCodeProvider>
         </Router>
     )   
 }
