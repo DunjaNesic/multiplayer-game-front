@@ -50,7 +50,6 @@ function CallFriend(props) {
         player2: response.player2,
       });
       //vise se ne ispisuje dunja dvapuuuuuuuut vuuuuu
-      console.log("Room code od servera je: " + response.code);
       setRoomCode(response.code);
       if (response.room !== "" && response.player1.id !== response.player2.id) {
         setMatchStarted(true);  

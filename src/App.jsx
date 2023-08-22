@@ -20,9 +20,6 @@ export default function App() {
 
   const [isSocketReady, setSocketReady] = useState(false);
 
-  // const [roomCode, setRoomCode] = useState("lalalla");
-  // };
-
 useEffect(() => { 
   socket.current = io("http://localhost:3000", { transports: ["websocket"] });
 
@@ -47,8 +44,6 @@ useEffect(() => {
         <div>
           <CallFriend
             socket={ socket }
-            // roomCode={ roomCode }
-            // setRoomCode={ setRoomCode }
             />
             <DataLoggedUser/>          
             <Logout/>
@@ -75,8 +70,6 @@ useEffect(() => {
 <div>
   <CallFriend
     socket={ socket }
-    // roomCode={roomCode }
-    // setRoomCode={setRoomCode}
     />
     <DataLoggedUser/>          
     <Logout/>
@@ -102,15 +95,11 @@ useEffect(() => {
   path="/Gameplay"
   element={isLoggedIn === "true" && socket.current ? (
     <Gameplay socket={socket.current} 
-    // roomCode={ roomCode }
-    // setRoomCode={ setRoomCode }
      />
   ) : (
     <div>Loading...</div>
   )}
-/>
-
-        
+/> 
         </Routes>
         </div>
         </RoomCodeProvider>

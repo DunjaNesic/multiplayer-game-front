@@ -14,6 +14,7 @@ const Board = (props) => {
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
   ];
+  const [readyToPlay, setReadyToPlay]=useState(false);
   const { roomCode } = useRoomCode();
   const [board, setBoard] = useState(defaultBoard);
   const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
@@ -66,11 +67,12 @@ const Board = (props) => {
   };
 
   const handleBoard = () =>{
-    console.log(props.socket);
-    console.log(data);
     props.socket.emit("updateDashboard", data);
-  }
 
+    props.socket.on("readyGame", (response) => {
+      setReadyToPlay(true); 
+    })
+  }
 
   const handleGuess = (row, column) => {
     
@@ -81,7 +83,7 @@ const Board = (props) => {
       className={`board ${
         (props.gameMode === "placement" &&
           props.whoseBoard === "opponentsBoard") ||
-        (props.gameMode === "playing" && props.whoseBoard === "myBoard")
+        (props.gameMode === "playing" && props.whoseBoard === "myBoard" && readyToPlay)
           ? "disabled"
           : ""
       }`}
@@ -105,7 +107,7 @@ const Board = (props) => {
           ))}
         </div>
       ))}
-      {props.gameMode === 'placement' && (
+      {props.gameMode === 'placement' && props.whoseBoard==="myBoard" && (
   <button className='gameplayBtn' onClick={() => { handleBoard(); props.setGameMode("playing");}}>Start Playing</button>
 )}
     </div>
