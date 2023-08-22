@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 const RoomCodeContext = createContext();
 
 export function RoomCodeProvider({ children }) {
-  const [roomCode, setRoomCode] = useState("kod1");
+  const [roomCode, setRoomCode] = useState("kod iz contexta");
 
   return (
     <RoomCodeContext.Provider value={{ roomCode, setRoomCode }}>

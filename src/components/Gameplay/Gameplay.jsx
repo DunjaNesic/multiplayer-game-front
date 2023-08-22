@@ -15,12 +15,6 @@ const Gameplay = props => {
         <div className="boards">
         <Board whoseBoard='myBoard'
             socket={props.socket} 
-            roomCode={ props.roomCode }
-            setRoomCode={ props.setRoomCode }
-            player1id={props.player1id}
-            setPlayer1id={props.setPlayer1id}
-            player2id={props.player2id}
-            setPlayer2id={props.setPlayer2id}
             gameMode={gameMode}
             setGameMode={setGameMode}/>
         <Board whoseBoard='opponentsBoard' gameMode={gameMode} disabled={gameMode === 'placement'}/>

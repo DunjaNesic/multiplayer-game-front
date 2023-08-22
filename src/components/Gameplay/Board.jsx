@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Field from "./Field";
 import "./gameplay.css";
+import { useRoomCode } from "../RoomCodeContext";
 
 
 //ja se stvarno izvinjavam za ovaj kod
@@ -13,11 +14,11 @@ const Board = (props) => {
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
   ];
+  const { roomCode } = useRoomCode();
   const [board, setBoard] = useState(defaultBoard);
   const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
-  // const [score, setScore] = useState(0);
   const [data, setData] = useState({
-    code: props.roomCode,
+    code: roomCode,
     dashboard: { board },
     player: "",
   });
@@ -27,7 +28,7 @@ const Board = (props) => {
       ...prevData,
       code: props.roomCode,
     }));
-  }, [props.roomCode]);
+  }, [roomCode]);
 
   const handlePlacement = (row, column, choice) => {
     if (
@@ -45,7 +46,7 @@ const Board = (props) => {
         updatedBoard[row][column] = choice;
         setBoard(updatedBoard);
         setData({
-          code: props.roomCode,
+          code: roomCode,
           dashboard: board,
           player: props.socket.id,
         });
@@ -55,7 +56,7 @@ const Board = (props) => {
         updatedBoard[row][column] = choice;
         setBoard(updatedBoard);
         setData({
-          code: props.roomCode,
+          code: roomCode,
           dashboard: board,
           player: props.socket.id,
         });
@@ -72,28 +73,7 @@ const Board = (props) => {
 
 
   const handleGuess = (row, column) => {
-    // if (props.gameMode === "playing" && board[row][column] === null) {
-    //   const selectedCell = board[row][column];
-    //   if (selectedCell === "barbie") {
-    //     setScore((prevScore) => prevScore + 10);
-    //     const updatedBoard = [...board];
-    //     updatedBoard[row][column] = "correct";
-    //     setBoard(updatedBoard);
-    //     props.socket.emit("updateDashboard", {
-    //       board: updatedBoard,
-    //       score: score,
-    //     });
-    //   } else if (selectedCell === "bomb") {
-    //     setScore((prevScore) => prevScore - 5);
-    //     const updatedBoard = [...board];
-    //     updatedBoard[row][column] = "wrong";
-    //     setBoard(updatedBoard);
-    //     props.socket.emit("updateDashboard", {
-    //       board: updatedBoard,
-    //       score: score,
-    //     });
-    //   }
-    // }
+    
   };
 
   return (
@@ -121,7 +101,6 @@ const Board = (props) => {
                       handlePlacement(fieldRow, fieldColumn, currentlyPlacing)
                   : () => handleGuess(fieldRow, fieldColumn)
               }
-              // EMIT NE MOZE DA BUDE KAD SE POSTAVLJA POLJE. EMIT ZA UPDATEDASHBOARD IDE KAD SE KLIKNE DUGME DA JE SPREMAN ZA IGRU.
             />
           ))}
         </div>

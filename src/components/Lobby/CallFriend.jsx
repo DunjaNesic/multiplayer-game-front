@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./user.css";
 import { useRoomCode } from "../RoomCodeContext";
+import { useNavigate } from "react-router-dom";
+
+
 
 function CallFriend(props) {
   const [inputRoomCode, setInputRoomCode] = useState("");
   const [codeForCopy, setCodeForCopy] = useState("");
-  const { roomCode, setRoomCode } = useRoomCode();
+  const {roomCode, setRoomCode } = useRoomCode();
   const [matchStarted, setMatchStarted] = useState(false);
   const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
   const [matchObj, setMatchObj] = useState({
@@ -13,6 +16,8 @@ function CallFriend(props) {
     player1: "",
     player2: "",
   });
+
+  const navigate = useNavigate();
 
   const clickedButton = () => {
     let result = "";
@@ -26,23 +31,6 @@ function CallFriend(props) {
     }
     setCodeForCopy(result);
   };
-
-  //Radi okej i bez ovog tkda ga trenutno ostavljam zakomentasiranog
-  //  useEffect(() => {
-  //    if (props.socket.current){
-  //    props.socket.current.on("gameStart", (response) => {
-  //       setMatchObj(
-  //        {
-  //          room: response.room,
-  //          player1: response.player1,
-  //          player2: response.player2
-  //        }
-  //       )
-  //       if (response.player1 !== response.player2) {setMatchStarted(true)
-  //        }
-  //    });
-  //  }
-  //  }, [props.socket]);
 
   const handleSocketConnection = () => {
     setPlayButtonDisabled(true);
@@ -72,17 +60,21 @@ function CallFriend(props) {
       alert("Room is full"); 
       setPlayButtonDisabled(false);
     })
-
      console.log("Room code is " + roomCode);
   };
 
-  if (matchStarted === true) {
-     window.location.href = "./Gameplay";
-  }
+  useEffect(()=>{
+    if (matchStarted === true) {
+      navigate("/Gameplay");
+      console.log(roomCode);
+   }
+  }, [matchStarted])
+ 
 
   useEffect(() => {
-    setRoomCode("kod2")
-  console.log(roomCode);
+    setRoomCode(roomCode)
+  // potencijalno cudan console log
+  // console.log(roomCode);
   },[roomCode]);
   
   

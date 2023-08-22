@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 
 function LogIn() {
   const [formData, setFormData] = React.useState({
@@ -13,6 +14,8 @@ function handleChange(event) {
         [name]: value
     }))
 }
+
+const navigate = useNavigate();
 
 function handleSubmit(event) {
     event.preventDefault()
@@ -32,7 +35,7 @@ function handleSubmit(event) {
           if (data.status === "ok") {
             window.localStorage.setItem("token", data.data)
             window.localStorage.setItem("loggedIn", true)
-            window.location.href="./Lobby"
+            navigate("./Lobby")
           } else {
             alert("Something went wrong");
           }
