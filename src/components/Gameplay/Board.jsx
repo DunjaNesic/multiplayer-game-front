@@ -68,7 +68,7 @@ const Board = (props) => {
   const handleBoard = () =>{
     console.log(props.socket);
     console.log(data);
-    // props.socket.emit("updateDashboard", data);
+    props.socket.emit("updateDashboard", data);
   }
 
 
