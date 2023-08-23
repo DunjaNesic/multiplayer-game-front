@@ -3,62 +3,43 @@ import Field from "./Field";
 import "./gameplay.css";
 import { useRoomCode } from "../RoomCodeContext";
 
-
 //ja se stvarno izvinjavam za ovaj kod
 const Board = (props) => {
-  const defaultBoard = [
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-    [null, null, null, null, null, null],
-  ];
-  const [readyToPlay, setReadyToPlay]=useState(false);
-  const { roomCode } = useRoomCode();
-  const [board, setBoard] = useState(defaultBoard);
-  const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
-  const [data, setData] = useState({
-    code: roomCode,
-    dashboard: { board },
-    player: "",
-  });
 
-  useEffect(() => {
-    setData((prevData) => ({
-      ...prevData,
-      code: props.roomCode,
-    }));
-  }, [roomCode]);
+  const { roomCode } = useRoomCode();
+  const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
 
   const handlePlacement = (row, column, choice) => {
     if (
+      props.whoseBoard==="myBoard" &&
       props.socket &&
       props.gameMode === "placement" &&
-      board[row][column] === null
+      props.board &&
+      props.board[row] &&
+      props.board[row][column] === null
     ) {
-      const barbiesCount = board
+      const barbiesCount = props.board
         .flat()
         .filter((cell) => cell === "barbie").length;
-      const bombsCount = board.flat().filter((cell) => cell === "bomb").length;
+      const bombsCount = props.board.flat().filter((cell) => cell === "bomb").length;
 
       if (choice === "barbie" && barbiesCount < 6) {
-        const updatedBoard = [...board];
+        const updatedBoard = [...props.board];
         updatedBoard[row][column] = choice;
-        setBoard(updatedBoard);
-        setData({
+        props.setBoard(updatedBoard);
+        props.setData({
           code: roomCode,
-          dashboard: board,
+          dashboard: props.board,
           player: props.socket.id,
         });
       } else if (bombsCount < 6) {
         setCurrentlyPlacing("bomb");
-        const updatedBoard = [...board];
+        const updatedBoard = [...props.board];
         updatedBoard[row][column] = choice;
-        setBoard(updatedBoard);
-        setData({
+        props.setBoard(updatedBoard);
+        props.setData({
           code: roomCode,
-          dashboard: board,
+          dashboard: props.board,
           player: props.socket.id,
         });
         
@@ -66,52 +47,88 @@ const Board = (props) => {
     }
   };
 
-  const handleBoard = () =>{
-    props.socket.emit("updateDashboard", data);
-
-    props.socket.on("readyGame", (response) => {
-      setReadyToPlay(true); 
-    })
-  }
-
+  useEffect(() => {
+    console.log("first turn isss " + props.firstTurn);
+  }, [props.firstTurn]);
+ 
   const handleGuess = (row, column) => {
+    const guessedCellPosition = props.board[row][column];
     
+    props.setPositionData(()=>{
+      return {
+        code: roomCode,
+        player: props.socket.id,
+        position: guessedCellPosition
+      }
+    }
+    );
+    console.log(props.positionData + "blaa");
+     props.socket.emit("guessPosition", props.positionData);
+
+    //  props.socket.on("invalidGuess", (response) => {
+    //    // nzm dal treba da uradim jos nes s ovim msm kontam da do ovog nikad nece doci
+    //    // IPAK DOLAZI DO OVOG NZM STO
+    //    alert("Invalid guess")
+    //  });
+
+     props.socket.on("positionAlreadyPlayed", (response)=>{
+      //ovo ne dobijam nikad 
+       alert("You already played that position");
+     });
+
+     props.socket.on("gameOver", (response)=>{
+       const winner = response.winner;
+       if (props.data.player===winner){
+         console.log("You won");
+       } else {
+         console.log("You lost, better luck next time");
+       }
+     });
+
+    // props.socket.on("playerGuess", (response)=>{
+    //   //...sila nekih info
+    // })
+
   };
 
   return (
-    <div
-      className={`board ${
-        (props.gameMode === "placement" &&
-          props.whoseBoard === "opponentsBoard") ||
-        (props.gameMode === "playing" && props.whoseBoard === "myBoard" && readyToPlay)
-          ? "disabled"
-          : ""
-      }`}
-    >
-      {board.map((row, fieldRow) => (
+    <div className={`board ${
+      (props.gameMode === "placement" &&
+      props.whoseBoard === "opponentsBoard") ||
+      (props.gameMode === "playing" &&
+      props.whoseBoard === "myBoard" && props.readyToPlay)
+        ? "disabled"
+        : ""
+    }`}>
+      {props.board.map((row, fieldRow) => (
         <div key={fieldRow} className="gameplay--row">
           {row.map((cell, fieldColumn) => (
             <Field
-              key={fieldColumn}
-              fieldColumn={fieldColumn}
-              fieldRow={fieldRow}
-              gameMode={props.gameMode}
-              content={cell}
-              onClick={
-                props.gameMode === "placement"
-                  ? () =>
-                      handlePlacement(fieldRow, fieldColumn, currentlyPlacing)
-                  : () => handleGuess(fieldRow, fieldColumn)
-              }
-            />
+            key={fieldColumn}
+            fieldColumn={fieldColumn}
+            fieldRow={fieldRow}
+            gameMode={props.gameMode}
+            content={props.whoseBoard==='myBoard' ? cell : ''} //nes ovde kvari drugi board rekla bih
+            onClick={
+              props.gameMode === "placement"
+                ? () =>
+                    handlePlacement(fieldRow, fieldColumn, currentlyPlacing)
+                : () => handleGuess(fieldRow, fieldColumn)
+            }
+            whoseBoard={props.whoseBoard} 
+            turn={props.firstTurn}
+            //mislim da ipak necu ovo ovako al neka ga tu 
+            // disabled={
+            //   props.gameMode === "playing" && firstTurn && props.whoseBoard === 'opponentsBoard'
+            // }
+          />
           ))}
         </div>
       ))}
-      {props.gameMode === 'placement' && props.whoseBoard==="myBoard" && (
-  <button className='gameplayBtn' onClick={() => { handleBoard(); props.setGameMode("playing");}}>Start Playing</button>
-)}
+      
     </div>
   );
+  
 };
 
 export default Board;

@@ -63,3 +63,9 @@
     color: #F900BF;
     max-width: 80%;
   }
+
+  .color{
+    color: red;
+    background-color: red;
+    border: 3px solid red;
+  }

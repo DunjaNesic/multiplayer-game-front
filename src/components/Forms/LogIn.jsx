@@ -35,7 +35,9 @@ function handleSubmit(event) {
           if (data.status === "ok") {
             window.localStorage.setItem("token", data.data)
             window.localStorage.setItem("loggedIn", true)
-            navigate("./Lobby")
+            //iz nekog razloga ne radiii
+            // navigate("/Lobby")
+            window.location.href="./Lobby"
           } else {
             alert("Something went wrong");
           }
