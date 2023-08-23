@@ -12,9 +12,18 @@ function Field(props) {
     }
   };
 
+  let cellClass = 'gameplay--field';
+   if (props.content === 'bomb') {
+     cellClass = ' bomb-cell'; 
+   } else if (props.content === 'barbie') {
+     cellClass = ' barbie-cell'; 
+   } else if (props.content === null){
+     cellClass ='empty-cell';
+   }
+
   return (
     <div
-      className={`gameplay--field ${
+      className={`gameplay--field ${props.gameMode==='playing' && props.whoseBoard === 'opponentsBoard' && cellClass} ${
         props.whoseBoard === 'opponentsBoard' && !props.turn ? 'disabled' : ''
       }`}
       onClick={handleClick}
@@ -23,5 +32,4 @@ function Field(props) {
     </div>
   );
 }
-
 export default Field;

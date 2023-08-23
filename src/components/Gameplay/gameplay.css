@@ -64,8 +64,16 @@
     max-width: 80%;
   }
 
-  .color{
-    color: red;
-    background-color: red;
-    border: 3px solid red;
+  .bomb-cell {
+    background-color: black;
+    color: white;
+  }
+  
+  .barbie-cell {
+    background-color: #F900BF;
+    color: white;
+  }
+
+  .empty-cell{
+    background-color: lightblue;
   }

@@ -8,6 +8,14 @@ const Board = (props) => {
 
   const { roomCode } = useRoomCode();
   const [currentlyPlacing, setCurrentlyPlacing] = useState("barbie");
+  const [playersGuess, setPlayersGuess] = useState({
+    player: "",
+    position: "",
+    field: null,
+    turn: "", 
+    myPoints: 0,
+    opponentsPoints: 0
+  })
 
   const handlePlacement = (row, column, choice) => {
     if (
@@ -85,10 +93,19 @@ const Board = (props) => {
        }
      });
 
-    // props.socket.on("playerGuess", (response)=>{
-    //   //...sila nekih info
-    // })
+     props.socket.on("playerGuess", (response)=>{
+       setPlayersGuess({
+          player: response.player,
+          position: response.position,
+          field: response.field,
+          turn: response.turn, 
+          myPoints: response.myPoints,
+          opponentsPoints: response.opponentsPoints
+       }
+       );
+     })
 
+     console.log(playersGuess);
   };
 
   return (
