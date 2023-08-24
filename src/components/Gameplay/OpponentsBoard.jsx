@@ -5,41 +5,85 @@ import OpponentsField from "./OpponentsField";
 
 function OpponentsBoard(props) {
     const { roomCode } = useRoomCode();
-    const defaultBoard = [
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-        [null, null, null, null, null, null],
-      ];
       const [positionData, setPositionData] = useState({
         code: roomCode,
-        player:"",
-        position:"",
+        player:props.socket.id,
+        position:{},
       });
-      const [firstTurn, setFirstTurn]=useState(false);
-      const [readyToPlay, setReadyToPlay]=useState(false);
 
-      const handleGuess = (row, column) => {}
+      const [playersGuess, setPlayersGuess] = useState({
+        player: "",
+        position: "",
+        field: null,
+        turn: "", 
+        myPoints: 0,
+        opponentsPoints: 0
+      })
 
-      const handleOpponentsBoard = () =>{
-        //   console.log(props.socket);
-        //   console.log(props.opponentsData);
-        console.log(props.opponentsData.code);
-        props.socket.emit("soonStart", props.opponentsData.code);
+      const [turn, setTurn] = useState(props.firstTurn);
+    //   useEffect(()=>{console.log(props.firstTurn);},[props.firstTurn]);
 
-        props.socket.on("finallyGame", (response) => {
-          console.log("response je: " + response.turn + "data player je:" + props.opponentsData.player);
-          if (response.turn===props.opponentsData.player) {
-            setFirstTurn(true)
+    const handleGuess = (row, column) => {
+        const guessedCellPosition = {row, column}
+        setPositionData(()=>{
+          return {
+            code: roomCode,
+            player: props.socket.id,
+            position: guessedCellPosition
           }
-             else {
-            setFirstTurn(false);
+        }
+        );
+         props.socket.emit("guessPosition", positionData);
+
+         props.socket.on("playerGuess", (response)=>{
+            setPlayersGuess({
+              //nez ni sta ce mi ovaj player...
+               player: response.player,
+               position: response.position,
+               field: response.field,
+               turn: response.turn, 
+               myPoints: response.myPoints,
+               opponentsPoints: response.opponentsPoints
+            }
+            );
+          })
+          if (playersGuess.turn === props.socket.id){
+            //ne znam sta treba da radim sa firstTurn-om od trenutka kad krenem da dobijam turn
+            setTurn(true);
           }
-          setReadyToPlay(true);         
-        });
-       }
+          else {
+            setTurn(false);
+          }
+          if (playersGuess.field === "barbie"){
+            const updatedOpponentsBoard = [...props.opponentsBoard];
+            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.column] = "barbie";
+            props.setOpponentsBoard(updatedOpponentsBoard);  
+          } else if (playersGuess.field==="bomb"){
+            const updatedOpponentsBoard = [...props.opponentsBoard];
+            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.column] = "bomb";
+            props.setOpponentsBoard(updatedOpponentsBoard);  
+          } else if (playersGuess.field==="null"){
+            const updatedOpponentsBoard = [...props.opponentsBoard];
+            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.column] = "error";
+            props.setOpponentsBoard(updatedOpponentsBoard);  
+          }
+
+          props.setMyPoints(playersGuess.myPoints);
+          props.setOpponentsPoints(playersGuess.opponentsPoints);
+
+        //   props.socket.on("invalidGuess", (response) => {
+        //     // nzm dal treba da uradim jos nes s ovim msm kontam da do ovog nikad nece doci
+        //     // IPAK DOLAZI DO OVOG NZM STO
+        //     alert("Invalid guess")
+        //   });
+  
+         props.socket.on("positionAlreadyPlayed", (response)=>{
+            alert("You already played that position");
+          });
+
+
+        }
+
 
   return (
     <div className={`board`}>
@@ -54,12 +98,12 @@ function OpponentsBoard(props) {
             content={cell} 
             onClick={() => handleGuess(fieldRow, fieldColumn)}
             whoseBoard={props.whoseBoard} 
-            turn={props.firstTurn}  
+            firstTurn={props.firstTurn}  
+            turn={turn}
           />
           ))}
         </div>
       ))}
-      <button className="gameplayBtn" onClick={handleOpponentsBoard}>Ready To Beat The Opponent</button>
     </div>
   )
 }

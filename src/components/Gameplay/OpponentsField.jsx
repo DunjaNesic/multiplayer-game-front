@@ -7,8 +7,7 @@ function OpponentsField(props) {
          if (props.gameMode === 'playing' && props.whoseBoard==="opponentsBoard") {
            props.onClick();
          } 
-      };
-    
+      };   
       let cellClass = 'gameplay--field';
        if (props.content === 'bomb') {
          cellClass = ' bomb-cell'; 
@@ -21,7 +20,7 @@ function OpponentsField(props) {
       return (
         <div
           className={`gameplay--field ${props.gameMode==='playing' && props.whoseBoard === 'opponentsBoard' && cellClass} ${
-            props.whoseBoard === 'opponentsBoard' && !props.turn ? 'disabled' : ''
+            props.whoseBoard === 'opponentsBoard' && !props.firstTurn && !props.turn ? 'disabled' : ''
           }`}
           onClick={handleClick}
         >

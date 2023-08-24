@@ -77,3 +77,15 @@
   .empty-cell{
     background-color: lightblue;
   }
+
+  .btnAndPoints{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 45%;
+  }
+
+  .points{
+    color: #F900BF;
+    font-size: 1.2rem;
+  }
