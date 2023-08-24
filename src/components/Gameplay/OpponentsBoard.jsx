@@ -23,17 +23,20 @@ function OpponentsBoard(props) {
       const [turn, setTurn] = useState(props.firstTurn);
     //   useEffect(()=>{console.log(props.firstTurn);},[props.firstTurn]);
 
-    const handleGuess = (row, column) => {
-        const guessedCellPosition = {row, column}
-        setPositionData(()=>{
-          return {
-            code: roomCode,
-            player: props.socket.id,
-            position: guessedCellPosition
-          }
-        }
-        );
-         props.socket.emit("guessPosition", positionData);
+    const handleGuess = (row, col) => {
+        const guessedCellPosition = {row, col}
+        setPositionData((prevData) => {
+          const updatedData = {
+            ...prevData,
+            position: guessedCellPosition,
+          };
+          props.socket.emit("guessPosition", updatedData);
+          console.log(updatedData); 
+          props.socket.emit("guessPosition", updatedData);
+          return updatedData;
+        });      
+         
+        
 
          props.socket.on("playerGuess", (response)=>{
             setPlayersGuess({
@@ -56,15 +59,15 @@ function OpponentsBoard(props) {
           }
           if (playersGuess.field === "barbie"){
             const updatedOpponentsBoard = [...props.opponentsBoard];
-            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.column] = "barbie";
+            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "barbie";
             props.setOpponentsBoard(updatedOpponentsBoard);  
           } else if (playersGuess.field==="bomb"){
             const updatedOpponentsBoard = [...props.opponentsBoard];
-            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.column] = "bomb";
+            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "bomb";
             props.setOpponentsBoard(updatedOpponentsBoard);  
           } else if (playersGuess.field==="null"){
             const updatedOpponentsBoard = [...props.opponentsBoard];
-            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.column] = "error";
+            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "error";
             props.setOpponentsBoard(updatedOpponentsBoard);  
           }
 
