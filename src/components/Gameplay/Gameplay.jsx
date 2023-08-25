@@ -89,7 +89,11 @@ const Gameplay = props => {
         setMyData={setMyData}
         myBoard={myBoard}
         setMyBoard={setMyBoard}
-        disabled={gameMode === 'playing'}
+        //disabled={gameMode === 'playing'}
+        setMyPoints={setMyPoints}
+        setOpponentsPoints={setOpponentsPoints}
+        turn={turn}
+        setTurn={setTurn}
         />
         <OpponentsBoard whoseBoard='opponentsBoard' 
         socket={props.socket} 

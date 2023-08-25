@@ -11,7 +11,7 @@ function MyField(props) {
   
     return (
       <div
-        className={`gameplay--field`}
+        className={`gameplay--field ${props.content==="guessed" ? "guessed" : ""} `}
         onClick={handleClick}
       >
         {props.content} 

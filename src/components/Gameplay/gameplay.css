@@ -44,7 +44,7 @@
 
   .disabled {
     pointer-events: none; 
-    opacity: 0.3;
+    opacity: 0.4;
   }
 
   .gameplayBtn{
@@ -75,7 +75,7 @@
   }
 
   .empty-cell{
-    background-color: lightblue;
+    background-color: #e6a5d4;
   }
 
   .btnAndPoints{
@@ -88,4 +88,8 @@
   .points{
     color: #F900BF;
     font-size: 1.2rem;
+  }
+
+  .guessed{
+    background-color: grey;
   }
