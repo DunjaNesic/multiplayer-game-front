@@ -20,8 +20,7 @@ function OpponentsBoard(props) {
         opponentsPoints: 0
       })
 
-      const [turn, setTurn] = useState(props.firstTurn);
-    //   useEffect(()=>{console.log(props.firstTurn);},[props.firstTurn]);
+     useEffect(()=>{console.log(props.firstTurn);},[props.firstTurn]);
 
     const handleGuess = (row, col) => {
         const guessedCellPosition = {row, col}
@@ -31,17 +30,15 @@ function OpponentsBoard(props) {
             position: guessedCellPosition,
           };
           props.socket.emit("guessPosition", updatedData);
-          console.log(updatedData); 
-          props.socket.emit("guessPosition", updatedData);
+          console.log(updatedData);
           return updatedData;
         });      
-         
-        
 
+        //ja bih ovo u Gameplay u neki useEffect 
+        //setTurn ne radiii
          props.socket.on("playerGuess", (response)=>{
+          console.log("aaaaaaaaaaa");
             setPlayersGuess({
-              //nez ni sta ce mi ovaj player...
-               player: response.player,
                position: response.position,
                field: response.field,
                turn: response.turn, 
@@ -51,40 +48,52 @@ function OpponentsBoard(props) {
             );
           })
           if (playersGuess.turn === props.socket.id){
-            //ne znam sta treba da radim sa firstTurn-om od trenutka kad krenem da dobijam turn
-            setTurn(true);
+            props.setTurn(true);
+            if (playersGuess.field === "barbie"){
+              const updatedOpponentsBoard = [...props.opponentsBoard];
+              updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "barbie";
+              props.setOpponentsBoard(updatedOpponentsBoard);  
+            } else if (playersGuess.field==="bomb"){
+              const updatedOpponentsBoard = [...props.opponentsBoard];
+              updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "bomb";
+              props.setOpponentsBoard(updatedOpponentsBoard);  
+            } else if (playersGuess.field==="null"){
+              const updatedOpponentsBoard = [...props.opponentsBoard];
+              updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "error";
+              props.setOpponentsBoard(updatedOpponentsBoard);  
+            }
+  
+            props.setMyPoints(playersGuess.myPoints);
+            props.setOpponentsPoints(playersGuess.opponentsPoints);
           }
           else {
-            setTurn(false);
+            props.setTurn(false);
+            //umesto opponent boarda treba da se menja my board
+            if (playersGuess.field === "barbie"){
+              const updatedOpponentsBoard = [...props.opponentsBoard];
+              updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "barbie";
+              props.setOpponentsBoard(updatedOpponentsBoard);  
+            } else if (playersGuess.field==="bomb"){
+              const updatedOpponentsBoard = [...props.opponentsBoard];
+              updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "bomb";
+              props.setOpponentsBoard(updatedOpponentsBoard);  
+            } else if (playersGuess.field==="null"){
+              const updatedOpponentsBoard = [...props.opponentsBoard];
+              updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "error";
+              props.setOpponentsBoard(updatedOpponentsBoard);  
+            }
+            props.setMyPoints(playersGuess.myPoints);
+            props.setOpponentsPoints(playersGuess.opponentsPoints);
           }
-          if (playersGuess.field === "barbie"){
-            const updatedOpponentsBoard = [...props.opponentsBoard];
-            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "barbie";
-            props.setOpponentsBoard(updatedOpponentsBoard);  
-          } else if (playersGuess.field==="bomb"){
-            const updatedOpponentsBoard = [...props.opponentsBoard];
-            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "bomb";
-            props.setOpponentsBoard(updatedOpponentsBoard);  
-          } else if (playersGuess.field==="null"){
-            const updatedOpponentsBoard = [...props.opponentsBoard];
-            updatedOpponentsBoard[playersGuess.position.row][playersGuess.position.col] = "error";
-            props.setOpponentsBoard(updatedOpponentsBoard);  
-          }
+          
 
-          props.setMyPoints(playersGuess.myPoints);
-          props.setOpponentsPoints(playersGuess.opponentsPoints);
-
-        //   props.socket.on("invalidGuess", (response) => {
-        //     // nzm dal treba da uradim jos nes s ovim msm kontam da do ovog nikad nece doci
-        //     // IPAK DOLAZI DO OVOG NZM STO
-        //     alert("Invalid guess")
-        //   });
+           props.socket.on("invalidGuess", (response) => {
+             alert("Invalid guess")
+           });
   
          props.socket.on("positionAlreadyPlayed", (response)=>{
             alert("You already played that position");
           });
-
-
         }
 
 
@@ -101,8 +110,7 @@ function OpponentsBoard(props) {
             content={cell} 
             onClick={() => handleGuess(fieldRow, fieldColumn)}
             whoseBoard={props.whoseBoard} 
-            firstTurn={props.firstTurn}  
-            turn={turn}
+            turn={props.turn}  
           />
           ))}
         </div>

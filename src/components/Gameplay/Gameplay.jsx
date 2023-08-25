@@ -27,7 +27,7 @@ const Gameplay = props => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const { roomCode } = useRoomCode();
   const [gameMode, setGameMode] = useState("placement");
-  const [firstTurn, setFirstTurn]=useState(false);
+  const [turn, setTurn]=useState(false);
   const [myPoints, setMyPoints] = useState(0);
   const [opponentsPoints, setOpponentsPoints]=useState(0);
   const [confetti, setConfetti]=useState(false);
@@ -65,16 +65,15 @@ const Gameplay = props => {
     setGameMode("playing");
     console.log("response je: " + response.turn + "data player je:" + opponentsData.player);
     if (response.turn===opponentsData.player) {
-      setFirstTurn(true)
+      setTurn(true)
     }
        else {
-      setFirstTurn(false);
+      setTurn(false);
     }    
   });
  } else {
    alert("You have to place 7 barbies and 6 bombs");
  }
- 
 }
 
   return (
@@ -101,8 +100,8 @@ const Gameplay = props => {
         opponentsBoard={opponentsBoard}
         setOpponentsBoard={setOpponentsBoard}
         disabled={gameMode === 'placement'}
-        firstTurn={firstTurn}
-        setFirstTurn={setFirstTurn}
+        turn={turn}
+        setTurn={setTurn}
         setMyPoints={setMyPoints}
         setOpponentsPoints={setOpponentsPoints}
         />

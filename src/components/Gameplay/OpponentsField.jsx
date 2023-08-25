@@ -8,11 +8,12 @@ function OpponentsField(props) {
            props.onClick();
          } 
       };   
+      
       let cellClass = 'gameplay--field';
        if (props.content === 'bomb') {
-         cellClass = ' bomb-cell'; 
+         cellClass = 'bomb-cell'; 
        } else if (props.content === 'barbie') {
-         cellClass = ' barbie-cell'; 
+         cellClass = 'barbie-cell'; 
        } else if (props.content === 'error'){
          cellClass ='empty-cell';
        }
@@ -20,7 +21,7 @@ function OpponentsField(props) {
       return (
         <div
           className={`gameplay--field ${props.gameMode==='playing' && props.whoseBoard === 'opponentsBoard' && cellClass} ${
-            props.whoseBoard === 'opponentsBoard' && !props.firstTurn && !props.turn ? 'disabled' : ''
+            props.whoseBoard === 'opponentsBoard' && !props.turn ? 'disabled' : ''
           }`}
           onClick={handleClick}
         >
