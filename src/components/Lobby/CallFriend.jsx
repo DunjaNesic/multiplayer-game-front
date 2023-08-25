@@ -43,13 +43,13 @@ function CallFriend(props) {
     props.socket.current.emit("sendRoomCode", code);
 
     props.socket.current.on("gameStart", (response) => {
+      console.log(response);
       setMatchObj({
         ...matchObj,
         room: response.code,
         player1: response.player1,
         player2: response.player2,
       });
-      //vise se ne ispisuje dunja dvapuuuuuuuut vuuuuu
       setRoomCode(response.code);
       if (response.room !== "" && response.player1.id !== response.player2.id) {
         setMatchStarted(true);  

@@ -44,23 +44,15 @@ function MyBoard(props) {
     }
   };
 
-  useEffect(() => {
-    console.log(props.turn);
-  }, [props.turn]);
-
    useEffect(() => {
       props.socket.on("playerGuess", (response) => {
-        console.log("primila event playerGuess");
-        console.log(response);
-        console.log("socket id: " + props.socket.id)
         if (!(response.player === props.socket.id)) {
-          console.log("Niakd se ne desi da response.player nije isto sto i socket id??");
-          //props.setTurn(true);
           props.setMyPoints(response.myPoints);
           props.setOpponentsPoints(response.opponentsPoints);
           const updatedMyBoard = [...props.myBoard];
-          updatedMyBoard[response.position.row][response.position.col] = "guessed";
-        }// else {props.setTurn(true);}
+          updatedMyBoard[response.position.row][response.position.col] = "X";
+          props.setMyBoard(updatedMyBoard);
+        }
         if ((response.turn === props.socket.id)) {
           props.setTurn(true);
         }

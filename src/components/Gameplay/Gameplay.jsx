@@ -63,7 +63,6 @@ const Gameplay = props => {
    props.socket.on("readyGame", (response) => {
     setIsButtonDisabled(true);
     setGameMode("playing");
-    console.log("response je: " + response.turn + "data player je:" + opponentsData.player);
     if (response.turn===opponentsData.player) {
       setTurn(true)
     }
@@ -75,6 +74,17 @@ const Gameplay = props => {
    alert("You have to place 7 barbies and 6 bombs");
  }
 }
+
+useEffect(()=>{
+  props.socket.on("gameOver", (response)=>{
+    const winner = response.winner;
+    if (props.socket.id===winner){
+      setConfetti(true);
+    } else {
+      alert("You lost :(")
+    }
+  });
+},[turn]);
 
   return (
     <div className='game'>
@@ -89,7 +99,7 @@ const Gameplay = props => {
         setMyData={setMyData}
         myBoard={myBoard}
         setMyBoard={setMyBoard}
-        //disabled={gameMode === 'playing'}
+        disabled={gameMode === 'playing'}
         setMyPoints={setMyPoints}
         setOpponentsPoints={setOpponentsPoints}
         turn={turn}
