@@ -6,7 +6,7 @@
 
 .App {
   overflow: hidden;
-  min-height: 100fs;
+  max-height: 100vh;
 }
 
 body {

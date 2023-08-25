@@ -43,7 +43,6 @@ function CallFriend(props) {
     props.socket.current.emit("sendRoomCode", code);
 
     props.socket.current.on("gameStart", (response) => {
-      console.log(response);
       setMatchObj({
         ...matchObj,
         room: response.code,

@@ -4,6 +4,7 @@ import OpponentsBoard from './OpponentsBoard';
 import './gameplay.css'
 import { useRoomCode } from "../RoomCodeContext";
 import Confetti from 'react-confetti';
+import { useNavigate } from "react-router-dom";
 //znaci boze gospode
 
 const Gameplay = props => {
@@ -45,6 +46,9 @@ const Gameplay = props => {
   });
 
   const [waitingBtn, setWaitingBtn] = useState(false);
+  const [hasLost, setHasLost] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
+  const [won, setWon] = useState(false);
 
   useEffect(() => {
     setMyData((prevData) => ({
@@ -52,6 +56,13 @@ const Gameplay = props => {
       code: props.roomCode,
     }));
   }, [roomCode]);
+
+  const navigate = useNavigate();
+
+  const handleGoBackToLobby = () => {
+    navigate("/");
+  };
+  
 
   const handlePlayButton = () =>{
    const barbiesCount = myBoard.flat().filter((cell) => cell === 'barbie').length;
@@ -75,19 +86,28 @@ const Gameplay = props => {
  }
 }
 
-useEffect(()=>{
-  props.socket.on("gameOver", (response)=>{
+useEffect(() => {
+  props.socket.on("gameOver", (response) => {
+    console.log(response);
     const winner = response.winner;
-    if (props.socket.id===winner){
+    if (props.socket.id === winner) {
       setConfetti(true);
+
+      setTimeout(() => {
+        setConfetti(false);
+        setGameEnded(true);
+        setWon(true);
+      }, 10000);
+      
     } else {
-      alert("You lost :(")
+      setHasLost(true);
+      setGameEnded(true)
     }
   });
-},[turn]);
+}, [turn]);
 
   return (
-    <div className='game'>
+    <div className={`game ${hasLost ? 'lost' : ''}`}>
       {confetti && <Confetti/>}
       <p className='barbieheimer'>Game instruction: Welcome to BarbieHeimer. There are 36 fields. If you want to survive, place your barbies and your bombs very carefully. Since you have found yourself in this unlucky situation, you will also have an unlucky number of placing your stuff - 13. You will first input 7 barbies and then 6 bombs. Good luck - you need it </p>
         <div className="boards">
@@ -121,13 +141,32 @@ useEffect(()=>{
         />
         </div>
         <div className='btnAndPoints'>
-        <button className={`gameplayBtn ${isButtonDisabled ? "disabled" : ""}`} onClick={handlePlayButton}>{gameMode==="playing" ? "In The Game" : waitingBtn ? "Waiting for opponent" : "Start the game"}</button>
-        <div className='points'><p>Your Points: {myPoints}</p>
-        <p>Opponents points: {opponentsPoints}</p></div>
-        </div>
-
+      <button className={`gameplayBtn ${isButtonDisabled ? "disabled" : ""}`} onClick={handlePlayButton}>
+        {gameMode === "playing" ? "In The Game" : waitingBtn ? "Waiting for opponent" : "Start the game"}
+      </button>
+      <div className='points'>
+        <p>Your Points: {myPoints}</p>
+        <p>Opponents points: {opponentsPoints}</p>
+      </div>
     </div>
-  )
+    {gameEnded && (
+      <div className="modal">
+        <div className='modal-content'>
+        {won ? (
+          <div>
+            <p>Congratulations, you won!</p>
+          </div>
+        ) : (
+          <div>
+            <p>You lost, better luck next time.</p>
+          </div>
+        )}
+        <button className='modalBtn' onClick={handleGoBackToLobby}>Go back to Lobby</button>
+      </div>
+      </div>
+    )}
+  </div>
+);
 }
 
 export default Gameplay

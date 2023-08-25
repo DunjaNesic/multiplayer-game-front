@@ -1,5 +1,7 @@
 import React from 'react'
 import './gameplay.css';
+import barbie from './barbie.png'
+import kilijan from './kilijan.png'
 
 function OpponentsField(props) {
     const handleClick = (e) => {
@@ -17,6 +19,16 @@ function OpponentsField(props) {
        } else if (props.content === 'empty'){
          cellClass ='empty-cell';
        }
+
+       let contentElement = null; 
+       if (props.content === "barbie") {
+         contentElement = <img src={barbie} alt="Barbie" />;
+       } else if (props.content === "bomb") {
+         contentElement = <img src={kilijan} alt="Bomb" />;
+       } else {
+         contentElement = ""; 
+       }
+     
     
       return (
         <div
@@ -25,7 +37,7 @@ function OpponentsField(props) {
           }`}
           onClick={handleClick}
         >
-          {props.content} 
+          {contentElement} 
         </div>
       );
 }
