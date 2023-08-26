@@ -1,5 +1,5 @@
 .game{
-  padding-top: 2rem;
+  /* padding-top: 2rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,7 +57,6 @@
     border: #F900BF;
     font-family: ladislav;
     font-size: 1rem;
-    margin-top: 3rem; 
   }
 
   .barbieheimer{
@@ -67,34 +66,36 @@
 
   .bomb-cell {
     background-color: black;
-    color: white;
   }
   
   .barbie-cell {
     background-color: #F900BF;
-    color: white;
   }
 
   .empty-cell{
     background-color: #e6a5d4;
   }
 
+   .guessed {
+    background-color: #e6a5d4;
+    opacity: 50%;
+  } 
+
   .btnAndPoints{
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 45%;
+    margin-top: 1rem;
   }
 
   .points{
     color: #F900BF;
     font-size: 1.2rem;
-  }
-
-  .guessed{
-    background-color: #e6a5d4;
-    opacity: 50%;
-    color: #F9DFF2;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: center;
   }
 
   .lost {
@@ -119,7 +120,7 @@
     padding: 2rem;
     border-radius: 1rem;
     text-align: center;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
   }
   
   .modalBtn {

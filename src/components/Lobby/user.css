@@ -19,6 +19,7 @@
     border-radius: 1rem; 
     background-color: #F900BF;   
     max-width: fit-content;
+    z-index: 1;
 }
 
 td{
@@ -31,7 +32,7 @@ td{
     background-color: #F900BF;
     padding: 2rem;
     border-radius: 1rem;
-    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.4);
     color: white;
 }
 
@@ -62,7 +63,7 @@ td{
     background-color: #F900BF;
     border: #F900BF;
     font-family: ladislav;
-    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.4);
   }
   
   .code{
@@ -70,11 +71,11 @@ td{
     margin: 1rem 0rem;
   }
 
-  input{
+  .callinput{
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 2px solid #F900BF;
-    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.4);
     margin: 0rem 1rem;
     width: 25rem;
   }
@@ -96,7 +97,7 @@ td{
     font-family: ladislav;
     font-size: 3rem;
     margin-top: 3rem;
-    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.4);
   }
 
   .start{
@@ -115,7 +116,8 @@ td{
     font-family: ladislav;
     font-size: 1rem;
     margin: 2rem;
-    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.75);
+    box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.4);
+    z-index: 1;
   }
 
   .logout{

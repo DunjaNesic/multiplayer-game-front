@@ -15,10 +15,16 @@ import { RoomCodeProvider } from "./components/RoomCodeContext"
 export default function App() {
 
   const isLoggedIn = window.localStorage.getItem("loggedIn");
+  const [loggedUserInfo, setLoggedUserInfo] = useState({
+    email: "",
+    fname: "", 
+    lname: ""
+  });
   
   const socket = useRef();
 
   const [isSocketReady, setSocketReady] = useState(false);
+  const [matchStarted, setMatchStarted] = useState(false);
 
 useEffect(() => { 
   socket.current = io("http://localhost:3000", { transports: ["websocket"] });
@@ -40,15 +46,7 @@ useEffect(() => {
         <RoomCodeProvider>
         <div className="App">
         <Routes>
-          <Route exact path="/" element={ isLoggedIn === "true" ? 
-        <div>
-          <CallFriend
-            socket={ socket }
-            />
-            <DataLoggedUser/>          
-            <Logout/>
-            <img className="haikei-img2" src={haikei2} alt="d" />
-          </div> :
+          <Route exact path="/" element={ 
             <div className="form--img">
             <div className="forms">
             <div className="par--wrapper">
@@ -70,8 +68,14 @@ useEffect(() => {
 <div>
   <CallFriend
     socket={ socket }
+    matchStarted={matchStarted}
+    setMatchStarted={setMatchStarted}
+    loggedUserInfo = {loggedUserInfo}
+    setLoggedUserInfo={setLoggedUserInfo}
     />
-    <DataLoggedUser/>          
+    <DataLoggedUser
+    loggedUserInfo = {loggedUserInfo}
+    setLoggedUserInfo={setLoggedUserInfo}/>          
     <Logout/>
     <img className="haikei-img2" src={haikei2} alt="d" />
   </div> :
@@ -95,6 +99,8 @@ useEffect(() => {
   path="/Gameplay"
   element={isLoggedIn === "true" && socket.current ? (
     <Gameplay socket={socket.current} 
+    matchStarted={matchStarted}
+    setMatchStarted={setMatchStarted}
      />
   ) : (
     <div>Loading...</div>

@@ -49,8 +49,10 @@ function MyBoard(props) {
         if (!(response.player === props.socket.id)) {
           props.setMyPoints(response.myPoints);
           props.setOpponentsPoints(response.opponentsPoints);
+          props.setMyTurnsLeft(response.myMovesLeft);
+          props.setOpponentsTurnsLeft(response.opponentsMovesLeft);
           const updatedMyBoard = [...props.myBoard];
-          updatedMyBoard[response.position.row][response.position.col] = "X";
+          updatedMyBoard[response.position.row][response.position.col] = "x";
           props.setMyBoard(updatedMyBoard);
         }
         if ((response.turn === props.socket.id)) {

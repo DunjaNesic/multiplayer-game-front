@@ -42,6 +42,8 @@ function OpponentsBoard(props) {
         }
         props.setMyPoints(response.myPoints);
         props.setOpponentsPoints(response.opponentsPoints);
+        props.setMyTurnsLeft(response.myMovesLeft);
+        props.setOpponentsTurnsLeft(response.opponentsMovesLeft);
       } 
     });
     

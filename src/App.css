@@ -51,12 +51,14 @@ body {
 
 .haikei-img {
   width: 100vw;
-  min-width: 60rem;
-  transform: translateY(-13rem);
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
 
 .haikei-img2 {
   width: 100vw;
-  min-width: 50rem;
-  transform: translateY(-3rem);
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }

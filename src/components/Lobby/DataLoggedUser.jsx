@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './user.css'
 
-
-function DataLoggedUser() {
-  const [loggedUserInfo, setLoggedUserInfo] = useState({
-    email: "",
-    fname: "", 
-    lname: ""
-  });
+function DataLoggedUser(props) {
 
   useEffect(() => {
     fetch("http://localhost:3000/Lobby", {
@@ -23,7 +17,7 @@ function DataLoggedUser() {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "ok") {
-          setLoggedUserInfo(() => ({
+          props.setLoggedUserInfo(() => ({
             email: data.data.email,
             fname: data.data.fname,
             lname: data.data.lname
@@ -43,15 +37,14 @@ function DataLoggedUser() {
     <td><h3>Currently logged user</h3></td>
   </tr>
   <tr>
-    <td><p>Email adress: {loggedUserInfo.email} </p></td>
+    <td><p>Email adress: {props.loggedUserInfo.email} </p></td>
   </tr>
   <tr>
-    <td><p>Name: {loggedUserInfo.fname}</p></td>
+    <td><p>Name: {props.loggedUserInfo.fname}</p></td>
   </tr>
-  <tr><td><p>Last name: {loggedUserInfo.lname}</p></td></tr>
+  <tr><td><p>Last name: {props.loggedUserInfo.lname}</p></td></tr>
   </tbody>
 </table>
-
     </div>
   );
 }

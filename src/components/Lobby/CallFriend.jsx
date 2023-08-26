@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./user.css";
 import { useRoomCode } from "../RoomCodeContext";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 function CallFriend(props) {
   const [inputRoomCode, setInputRoomCode] = useState("");
   const [codeForCopy, setCodeForCopy] = useState("");
-  const {roomCode, setRoomCode } = useRoomCode();
-  const [matchStarted, setMatchStarted] = useState(false);
+  const { setRoomCode } = useRoomCode();
   const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
+  const [waitingButton, setWaitingButton] = useState(true);
   const [matchObj, setMatchObj] = useState({
     room: "",
     player1: "",
@@ -33,9 +33,12 @@ function CallFriend(props) {
   };
 
   const handleSocketConnection = () => {
+    console.log(props.loggedUserInfo);
     setPlayButtonDisabled(true);
+    setWaitingButton(false);
     const code = inputRoomCode;
     if (code==="") {alert("Pls input the code first");
+    setWaitingButton(true);
     setPlayButtonDisabled(false);
     return;
   }
@@ -51,21 +54,17 @@ function CallFriend(props) {
       });
       setRoomCode(response.code);
       if (response.room !== "" && response.player1.id !== response.player2.id) {
-        setMatchStarted(true);  
+        props.setMatchStarted(true); 
+        navigate("/Gameplay");
       }
     });
 
     props.socket.current.on("gameFull", (response) => {
       alert("Room is full"); 
       setPlayButtonDisabled(false);
+      setWaitingButton(true);
     })
   };
-
-  useEffect(()=>{
-    if (matchStarted === true) {
-      navigate("/Gameplay");
-   }
-  }, [matchStarted])
 
   return (
     <div className="invitation">
@@ -83,14 +82,14 @@ function CallFriend(props) {
       <p className="code">
         Input this code to start the game: {codeForCopy}
       </p>
-      <input
+      <input className="callinput"
         type="text"
         value={inputRoomCode}
         onChange={(e) => setInputRoomCode(e.target.value)}
       />
       <div className="start">
         <button className="btnStart" onClick={handleSocketConnection} disabled={playButtonDisabled}>
-          PLAY
+          {waitingButton ? "PLAY" : "WAITING"}
         </button>
       </div>
     </div>

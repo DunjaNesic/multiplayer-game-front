@@ -39,7 +39,7 @@ function handleSubmit(event) {
             // navigate("/Lobby")
             window.location.href="./Lobby"
           } else {
-            alert("Something went wrong");
+            alert("That user doesn't exist");
           }
         });
 }

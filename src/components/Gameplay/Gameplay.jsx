@@ -49,6 +49,15 @@ const Gameplay = props => {
   const [hasLost, setHasLost] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
   const [won, setWon] = useState(false);
+  const [tie, setTie] = useState(false);
+  const [myTurnsLeft, setMyTurnsLeft] = useState(10);
+  const [opponentsTurnsLeft, setOpponentsTurnsLeft] = useState(10);
+
+  useEffect(() => {
+    if (!props.matchStarted){
+      navigate('/Lobby')
+    }
+  }, []);
 
   useEffect(() => {
     setMyData((prevData) => ({
@@ -60,10 +69,9 @@ const Gameplay = props => {
   const navigate = useNavigate();
 
   const handleGoBackToLobby = () => {
-    navigate("/");
+    navigate("/Lobby");
   };
   
-
   const handlePlayButton = () =>{
    const barbiesCount = myBoard.flat().filter((cell) => cell === 'barbie').length;
    const bombsCount = myBoard.flat().filter((cell) => cell === 'bomb').length;
@@ -89,16 +97,18 @@ const Gameplay = props => {
 useEffect(() => {
   props.socket.on("gameOver", (response) => {
     console.log(response);
+    console.log(props.socket.id);
     const winner = response.winner;
     if (props.socket.id === winner) {
       setConfetti(true);
-
       setTimeout(() => {
         setConfetti(false);
         setGameEnded(true);
         setWon(true);
-      }, 10000);
-      
+      }, 10000);    
+    } else if (winner ==="tie"){
+       setGameEnded(true)
+       setTie(true)
     } else {
       setHasLost(true);
       setGameEnded(true)
@@ -124,6 +134,10 @@ useEffect(() => {
         setOpponentsPoints={setOpponentsPoints}
         turn={turn}
         setTurn={setTurn}
+        myTurnsLeft={myTurnsLeft}
+        setMyTurnsLeft={setMyTurnsLeft}
+        opponentsTurnsLeft={opponentsTurnsLeft}
+        setOpponentsTurnsLeft={setOpponentsTurnsLeft}
         />
         <OpponentsBoard whoseBoard='opponentsBoard' 
         socket={props.socket} 
@@ -138,6 +152,10 @@ useEffect(() => {
         setTurn={setTurn}
         setMyPoints={setMyPoints}
         setOpponentsPoints={setOpponentsPoints}
+        myTurnsLeft={myTurnsLeft}
+        setMyTurnsLeft={setMyTurnsLeft}
+        opponentsTurnsLeft={opponentsTurnsLeft}
+        setOpponentsTurnsLeft={setOpponentsTurnsLeft}
         />
         </div>
         <div className='btnAndPoints'>
@@ -145,14 +163,23 @@ useEffect(() => {
         {gameMode === "playing" ? "In The Game" : waitingBtn ? "Waiting for opponent" : "Start the game"}
       </button>
       <div className='points'>
+        <div>
         <p>Your Points: {myPoints}</p>
         <p>Opponents points: {opponentsPoints}</p>
+        </div>
+        <div>
+          <p>Your Moves Left: {myTurnsLeft}</p>
+          <p>Opponents Moves Left {opponentsTurnsLeft}</p>
+        </div>
       </div>
     </div>
     {gameEnded && (
       <div className="modal">
         <div className='modal-content'>
-        {won ? (
+        {tie ? (
+        <div>
+          <p>It's a tie!</p>
+        </div>) : won ? (
           <div>
             <p>Congratulations, you won!</p>
           </div>
