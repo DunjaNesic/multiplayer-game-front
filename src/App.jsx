@@ -51,7 +51,7 @@ useEffect(() => {
             <div className="forms">
             <div className="par--wrapper">
             <p className="login--par">LOGIN <br /> PAGE</p>
-            <p>Log In To Your Page</p>
+            <p>Log In To Your Account</p>
             </div>
           <LogIn/>
           <SignUp/>

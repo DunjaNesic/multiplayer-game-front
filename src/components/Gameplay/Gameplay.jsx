@@ -119,7 +119,7 @@ useEffect(() => {
   return (
     <div className={`game ${hasLost ? 'lost' : ''}`}>
       {confetti && <Confetti/>}
-      <p className='barbieheimer'>Game instruction: Welcome to BarbieHeimer. There are 36 fields. If you want to survive, place your barbies and your bombs very carefully. Since you have found yourself in this unlucky situation, you will also have an unlucky number of placing your stuff - 13. You will first input 7 barbies and then 6 bombs. Good luck - you need it </p>
+      <p className='barbieheimer'>Game instructions: Welcome to BarbieHeimer. There are 36 fields. If you want to survive, place your barbies and your bombs very carefully. Since you have found yourself in this unlucky situation, you will also have an unlucky number of placing your stuff - 13. You will first place 7 barbies and then 6 bombs. Good luck - you WILL need it </p>
         <div className="boards">
         <MyBoard whoseBoard='myBoard'
         socket={props.socket} 
