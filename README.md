@@ -1,5 +1,5 @@
 ﻿# Client Side README
-# BarbieHeimer Multiplayer Online Game, using React.js for front-end, Node.js for Back-end and Socket.io for real-time communication
+# BarbieHeimer Online Multiplayer Game, using React.js, Node.js and Socket.io
 
 ### Overview
 This client is designed to facilitate a two-player online guessing game.
@@ -11,7 +11,7 @@ Socket.io is used to establish real-time communication between clients and the s
 The game allows two players to join a match using a room code.
 Each player has a dashboard with hidden objects (barbies and bombs) that they need to guess.
 Players take turns guessing positions on the dashboard, and points are awarded based on their guesses.
-The game continues until a set number of moves are exhausted, and a winner is determined.
+The game continues until a set number of moves is exhausted, and a winner is determined.
 
 ### Prerequisites
 Install the project dependencies:
