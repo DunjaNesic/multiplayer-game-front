@@ -22,7 +22,6 @@ export default function App() {
   });
   
   const socket = useRef();
-
   const [isSocketReady, setSocketReady] = useState(false);
   const [matchStarted, setMatchStarted] = useState(false);
 
@@ -40,13 +39,25 @@ useEffect(() => {
   };
 }, []);
   
-    return (
-      
+    return (  
       <Router>
         <RoomCodeProvider>
         <div className="App">
         <Routes>
-          <Route exact path="/" element={ 
+          <Route exact path="/" element={ isLoggedIn ? <div>
+  <CallFriend
+    socket={ socket }
+    matchStarted={matchStarted}
+    setMatchStarted={setMatchStarted}
+    loggedUserInfo = {loggedUserInfo}
+    setLoggedUserInfo={setLoggedUserInfo}
+    />
+    <DataLoggedUser
+    loggedUserInfo = {loggedUserInfo}
+    setLoggedUserInfo={setLoggedUserInfo}/>          
+    <Logout/>
+    <img className="haikei-img2" src={haikei2} alt="d" />
+  </div> :
             <div className="form--img">
             <div className="forms">
             <div className="par--wrapper">
@@ -83,7 +94,7 @@ useEffect(() => {
     <div className="forms">
     <div className="par--wrapper">
     <p className="login--par">LOGIN <br /> PAGE</p>
-    <p>Log In To Your Page</p>
+    <p>Log In To Your Account</p>
     </div>
   <LogIn/>
   <SignUp/>
@@ -103,7 +114,21 @@ useEffect(() => {
     setMatchStarted={setMatchStarted}
      />
   ) : (
-    <div>Loading...</div>
+    <div className="form--img">
+            <div className="forms">
+            <div className="par--wrapper">
+            <p className="login--par">LOGIN <br /> PAGE</p>
+            <p>Log In To Your Account</p>
+            </div>
+          <LogIn/>
+          <SignUp/>
+          <div className="par--wrapper">
+          <p className="signup--par">SIGN <br /> UP <br /> PAGE</p>
+          <p className="pink--par">Sign Up And Join Us</p>
+          </div>
+          </div>
+          <img className="haikei-img" src={haikei} alt="d" />
+          </div> 
   )}
 /> 
         </Routes>

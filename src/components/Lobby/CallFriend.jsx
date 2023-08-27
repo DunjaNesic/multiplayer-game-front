@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./user.css";
 import { useRoomCode } from "../RoomCodeContext";
 import { useNavigate } from "react-router-dom";
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CallFriend(props) {
   const [inputRoomCode, setInputRoomCode] = useState("");
@@ -35,22 +35,29 @@ function CallFriend(props) {
   const handleSocketConnection = () => {
     const email = props.loggedUserInfo.email;
     setPlayButtonDisabled(true);
-    setWaitingButton(false);
     const code = inputRoomCode;
     const data = {email: email, code: code}
-    if (code==="") {alert("Pls input the code first");
+    if (code==="") {
+      toast("Room code first", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        })
     setWaitingButton(true);
     setPlayButtonDisabled(false);
     return;
   }
-    props.socket.current.off("gameStart");
+  else {
+    setWaitingButton(false);
+  }
     props.socket.current.emit("sendRoomCode", data);
     console.log(data);
-  };
 
-  useEffect(() => {
-    if (props.socket.current && typeof props.socket.current.on === "function"){
-      console.log("dunja");
     props.socket.current.on("gameStart", (response) => {
       console.log("gamestart");
       setMatchObj({
@@ -65,21 +72,49 @@ function CallFriend(props) {
         navigate("/Gameplay");
       }
     });
+  };
 
+  useEffect(() => {
+    if (props.socket.current && typeof props.socket.current.on === "function"){
+  
     props.socket.current.on("gameFull", (response) => {
-      alert("Room is full"); 
-      setPlayButtonDisabled(false);
       setWaitingButton(true);
+      toast("Room is full", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        }) 
+      setPlayButtonDisabled(false);
     });
 
     props.socket.current.on("alreadyPlaying", (response)=>{
-      alert("You can't play from the same acc");
+      setWaitingButton(true);
+      setPlayButtonDisabled(false);
+     alert("You can't play from the same acc")
+      
     })
   }
   }, [props.socket.current]);
 
   return (
     <div className="invitation">
+       <div><ToastContainer position="top-right"
+autoClose={3000}
+limit={1}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/></div>
       <div className="call">
         <div className="invite--oponent">
           Invite Your Opponent Through Room Code

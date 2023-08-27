@@ -5,8 +5,10 @@ import './gameplay.css'
 import { useRoomCode } from "../RoomCodeContext";
 import Confetti from 'react-confetti';
 import { useNavigate } from "react-router-dom";
-//znaci boze gospode
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+//znaci boze gospode
 const Gameplay = props => {
 
   const defaultMyBoard = [
@@ -44,7 +46,6 @@ const Gameplay = props => {
     dashboard: { opponentsBoard },
     player: props.socket.id,
   });
-
   const [waitingBtn, setWaitingBtn] = useState(false);
   const [hasLost, setHasLost] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
@@ -52,6 +53,7 @@ const Gameplay = props => {
   const [tie, setTie] = useState(false);
   const [myTurnsLeft, setMyTurnsLeft] = useState(10);
   const [opponentsTurnsLeft, setOpponentsTurnsLeft] = useState(10);
+  const [playerLeft, setPlayerLeft] = useState(false);
 
   useEffect(() => {
     if (!props.matchStarted){
@@ -90,11 +92,25 @@ const Gameplay = props => {
     }    
   });
  } else {
-   alert("You have to place 7 barbies and 6 bombs");
+  toast("You must place 7 barbies and 6 cillians", {
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    })
  }
 }
 
 useEffect(() => {
+  props.socket.on("otherPlayerLeft", (response) => {
+    console.log("plYER LEFR");
+    setPlayerLeft(true)
+  })
+
   props.socket.on("gameOver", (response) => {
     console.log(response);
     console.log(props.socket.id);
@@ -119,6 +135,18 @@ useEffect(() => {
   return (
     <div className={`game ${hasLost ? 'lost' : ''}`}>
       {confetti && <Confetti/>}
+    <div><ToastContainer position="bottom-right"
+autoClose={3000}
+limit={3}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/></div>
       <p className='barbieheimer'>Game instructions: Welcome to BarbieHeimer. There are 36 fields. If you want to survive, place your barbies and your bombs very carefully. Since you have found yourself in this unlucky situation, you will also have an unlucky number of placing your stuff - 13. You will first place 7 barbies and then 6 bombs. Good luck - you WILL need it </p>
         <div className="boards">
         <MyBoard whoseBoard='myBoard'
@@ -172,7 +200,12 @@ useEffect(() => {
           <p>Opponents Moves Left {opponentsTurnsLeft}</p>
         </div>
       </div>
+    </div> {playerLeft && (<div className='modal'>
+    <div className='modal-content'>
+      <p>Your opponent has left the game</p>
+      <button className='modalBtn' onClick={handleGoBackToLobby}>Go back to Lobby</button>
     </div>
+    </div>)}
     {gameEnded && (
       <div className="modal">
         <div className='modal-content'>

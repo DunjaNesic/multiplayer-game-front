@@ -57,7 +57,7 @@ function MyBoard(props) {
         }
         if ((response.turn === props.socket.id)) {
           props.setTurn(true);
-        }
+        } 
       });
     }, [props.turn]);
 
